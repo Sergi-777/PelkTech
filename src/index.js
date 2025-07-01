@@ -71,8 +71,8 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(<Root />);
 
 // Redirección automática a /pelktech si no está en la URL
-if (!window.location.pathname.startsWith('/proyect-computo')) {
-  window.location.replace('/proyect-computo' + window.location.search + window.location.hash);
+if (!window.location.pathname.startsWith('/PelkTech')) {
+  window.location.replace('/PelkTech' + window.location.search + window.location.hash);
 }
 
 // If you want to start measuring performance in your app, pass a function
