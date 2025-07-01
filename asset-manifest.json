@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/proyect-computo/static/css/main.90cca853.css",
-    "main.js": "/proyect-computo/static/js/main.11cdbe33.js",
-    "static/js/453.c5c14f4d.chunk.js": "/proyect-computo/static/js/453.c5c14f4d.chunk.js",
-    "index.html": "/proyect-computo/index.html",
-    "main.90cca853.css.map": "/proyect-computo/static/css/main.90cca853.css.map",
-    "main.11cdbe33.js.map": "/proyect-computo/static/js/main.11cdbe33.js.map",
-    "453.c5c14f4d.chunk.js.map": "/proyect-computo/static/js/453.c5c14f4d.chunk.js.map"
+    "main.css": "/PelkTech/static/css/main.90cca853.css",
+    "main.js": "/PelkTech/static/js/main.d56fba5c.js",
+    "static/js/453.c5c14f4d.chunk.js": "/PelkTech/static/js/453.c5c14f4d.chunk.js",
+    "index.html": "/PelkTech/index.html",
+    "main.90cca853.css.map": "/PelkTech/static/css/main.90cca853.css.map",
+    "main.d56fba5c.js.map": "/PelkTech/static/js/main.d56fba5c.js.map",
+    "453.c5c14f4d.chunk.js.map": "/PelkTech/static/js/453.c5c14f4d.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.90cca853.css",
-    "static/js/main.11cdbe33.js"
+    "static/js/main.d56fba5c.js"
   ]
 }
