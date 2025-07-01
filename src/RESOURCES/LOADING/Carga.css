@@ -1,0 +1,56 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+/* Importa la paleta de colores */
+@import '../colors.css';
+
+html, body, #root {
+  margin: 0;
+  padding: 0;
+  background: var(--color-bg);
+}
+
+.carga-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  font-family: 'Poppins', sans-serif;
+  background: var(--color-bg);
+}
+
+.spinner {
+  width: 100px;
+  height: 100px;
+  border: 8px solid var(--color-border);
+  border-top: 8px solid var(--color-primary);
+  border-radius: 50%;
+  animation: spin 1.2s ease-in-out infinite;
+  box-shadow: 0 0 20px var(--color-primary);
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+p {
+  margin-top: 20px;
+  font-size: 1.5em;
+  color: var(--color-text);
+  text-shadow: 0 2px 5px var(--color-muted);
+  animation: fadeInUp 1s ease forwards;
+  opacity: 0;
+  animation-delay: 0.3s;
+}
+
+@keyframes fadeInUp {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}

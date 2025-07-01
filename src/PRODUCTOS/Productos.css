@@ -1,0 +1,179 @@
+.productos-admin-container {
+  padding: 2rem;
+  background: var(--color-bg, #f8fafc);
+  min-height: 100vh;
+}
+.productos-admin-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 2rem;
+}
+.productos-admin-add-btn {
+  background: #2563eb;
+  color: #fff;
+  border: none;
+  padding: 0.7em 1.3em;
+  border-radius: 8px;
+  font-weight: bold;
+  font-size: 1em;
+  display: flex;
+  align-items: center;
+  gap: 0.6em;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.productos-admin-add-btn:hover {
+  background: #1d4ed8;
+}
+.productos-admin-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 2rem;
+}
+.productos-admin-card {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+  padding: 1.2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  position: relative;
+  border: 1px solid #e5e7eb;
+}
+.productos-admin-img {
+  width: 100%;
+  max-height: 180px;
+  object-fit: contain;
+  border-radius: 8px;
+  margin-bottom: 1em;
+  background: #f1f5f9;
+}
+.productos-admin-info {
+  width: 100%;
+}
+.productos-admin-name {
+  font-size: 1.2em;
+  font-weight: bold;
+  margin-bottom: 0.2em;
+}
+.productos-admin-category {
+  color: #2563eb;
+  font-size: 0.98em;
+  margin-bottom: 0.2em;
+}
+.productos-admin-description {
+  color: #64748b;
+  font-size: 0.97em;
+  margin-bottom: 0.6em;
+}
+.productos-admin-meta {
+  display: flex;
+  gap: 1.2em;
+  margin-bottom: 0.7em;
+  font-size: 1em;
+}
+.productos-admin-price {
+  color: #059669;
+  font-weight: bold;
+}
+.productos-admin-stock {
+  color: #f59e0b;
+  font-weight: bold;
+}
+.productos-admin-edit-btn {
+  background: #f1f5f9;
+  color: #2563eb;
+  border: 1px solid #2563eb44;
+  border-radius: 8px;
+  padding: 0.5em 1.1em;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+.productos-admin-edit-btn:hover {
+  background: #2563eb;
+  color: #fff;
+}
+.productos-admin-modal-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(30,41,59,0.18);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.productos-admin-modal {
+  background: #fff;
+  border-radius: 12px;
+  padding: 2em 2.5em;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.13);
+  min-width: 320px;
+  max-width: 95vw;
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+}
+.productos-admin-modal h3 {
+  margin: 0 0 0.5em 0;
+  font-size: 1.2em;
+  color: #2563eb;
+}
+.productos-admin-modal label {
+  display: flex;
+  flex-direction: column;
+  font-weight: 500;
+  color: #222;
+  gap: 0.2em;
+}
+.productos-admin-modal input {
+  padding: 0.5em 1em;
+  border-radius: 8px;
+  border: 1px solid #cbd5e1;
+  font-size: 1em;
+  background: #f8fafc;
+  color: #222;
+  margin-top: 0.2em;
+  margin-bottom: 0.2em;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  outline: none;
+  box-sizing: border-box;
+}
+.productos-admin-modal input:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 2px #2563eb22;
+}
+.productos-admin-modal-btns {
+  display: flex;
+  gap: 1em;
+  margin-top: 0.5em;
+}
+.productos-admin-modal button {
+  font-size: 1em;
+  border-radius: 8px;
+  padding: 0.5em 1.2em;
+  border: none;
+  background: #2563eb;
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s, box-shadow 0.2s;
+}
+.productos-admin-modal button[type="button"] {
+  background: #64748b;
+}
+.productos-admin-modal button:disabled {
+  background: #a5b4fc;
+  cursor: not-allowed;
+}
+.productos-admin-modal button[type="button"]:hover {
+  background: #475569;
+}
+.productos-admin-modal button[type="submit"]:hover:not(:disabled) {
+  background: #1d4ed8;
+}

@@ -1,0 +1,324 @@
+@import '../RESOURCES/colors.css';
+
+/* Fondo oscuro con efecto overlay */
+.myprofile-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+/* Modal ocupa toda la pantalla */
+.myprofile-modal {
+  background: var(--color-surface);
+  color: var(--color-text);
+  width: 100vw;
+  height: 100vh;
+  border-radius: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+}
+
+/* Header fijo */
+.myprofile-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem;
+  background-color: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+  z-index: 1;
+}
+
+.myprofile-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--color-text);
+  letter-spacing: 0.5px;
+}
+
+.myprofile-close-btn {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: var(--color-muted);
+  transition: color 0.2s ease;
+  padding-left: 0.75rem;
+  padding-right: 0.75rem;
+  border-radius: 50%;
+  width: 2.2rem;
+  height: 2.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  background: var(--color-muted-bg, #f3f3f3);
+}
+
+.myprofile-close-btn:hover {
+  color: var(--color-primary);
+  background: var(--color-border);
+}
+
+/* Contenido desplazable */
+.myprofile-content-scroll {
+  flex: 1 1 auto;
+  overflow-y: auto;
+  padding: 0 0 1.5rem 0;
+  /* Elimina padding lateral aquí, lo tienen los hijos */
+}
+
+/* Contenedor del perfil */
+.myprofile-container {
+  border-top: 1px solid var(--color-border);
+  border-bottom: 1px solid var(--color-border);
+  padding: 1rem 2rem; /* padding arriba/abajo 1rem, laterales 2rem */
+  font-size: 1rem;
+  background: var(--color-surface);
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  max-height: 60vh;
+}
+
+.myprofile-container h2 {
+  font-size: 1.25rem;
+  margin-bottom: 0.75rem;
+  color: var(--color-primary);
+  letter-spacing: 0.2px;
+}
+
+/* Scrollbar invisible para navegadores Webkit */
+.myprofile-container::-webkit-scrollbar {
+  width: 8px;
+  background: transparent;
+}
+.myprofile-container::-webkit-scrollbar-thumb {
+  background: transparent;
+}
+
+/* Formulario de edición */
+.myprofile-edit-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+  margin-bottom: 1.2rem;
+}
+
+.myprofile-edit-form label {
+  font-weight: 500;
+  color: var(--color-primary);
+  margin-bottom: 0.2rem;
+  display: block;
+  font-size: 1rem;
+}
+
+.myprofile-edit-form input {
+  width: 100%;
+  padding: 0.6rem 0.9rem;
+  border: 1px solid var(--color-border);
+  border-radius: 7px;
+  font-size: 1rem;
+  background: var(--color-white, #fff);
+  color: var(--color-text);
+  transition: border 0.2s;
+  margin-top: 0.15rem;
+  box-sizing: border-box;
+}
+
+.myprofile-edit-form input:focus {
+  outline: none;
+  border: 1.5px solid var(--color-primary);
+  background: var(--color-bg, #f9f9f9);
+}
+
+/* Campos externos (rol, fecha_creacion_) */
+.myprofile-external-fields {
+  margin-top: 1.5rem;
+  padding: 1rem 0 0.5rem 0;
+  border-top: 1px dashed var(--color-border);
+  color: var(--color-muted);
+  font-size: 0.98rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.myprofile-external-fields strong {
+  color: var(--color-primary);
+  font-weight: 600;
+}
+
+/* Acciones fijas abajo */
+.myprofile-actions-bottom {
+  padding: 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  border-top: 1px solid var(--color-border);
+  background: linear-gradient(0deg, var(--color-surface) 90%, transparent 100%);
+  z-index: 1;
+  flex-wrap: wrap;
+}
+
+.myprofile-action-btn {
+  background-color: var(--color-primary);
+  color: var(--color-white);
+  padding: 0.75rem 1.25rem;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 0.95rem;
+  font-weight: 500;
+  transition: background-color 0.2s ease;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  letter-spacing: 0.2px;
+}
+
+.myprofile-action-btn:hover {
+  background-color: var(--color-hover);
+}
+
+.myprofile-action-btn:active {
+  background-color: var(--color-primary-dark, #1e3a8a);
+}
+
+/* Overlay especial para el modal de edición */
+.myprofile-edit-modal-overlay {
+  z-index: 2000 !important;
+  backdrop-filter: blur(2.5px) brightness(0.97);
+  background: rgba(0,0,0,0.18);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Modal de edición centrado y bonito */
+.myprofile-edit-modal {
+  max-width: 420px !important;
+  width: 96vw;
+  margin: auto;
+  height: auto !important;
+  min-height: unset !important;
+  border-radius: 18px !important;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.18) !important;
+  background: var(--color-surface, #fff) !important;
+  display: flex;
+  flex-direction: column;
+  padding: 0 1.5rem 1.5rem 1.5rem;
+  position: relative;
+  animation: myprofile-fadein 0.22s cubic-bezier(.4,1.2,.6,1) both;
+}
+
+@keyframes myprofile-fadein {
+  from { opacity: 0; transform: translateY(30px) scale(0.97);}
+  to { opacity: 1; transform: translateY(0) scale(1);}
+}
+
+/* Ajuste de header en modal de edición */
+.myprofile-edit-modal .myprofile-modal-header {
+  border-radius: 18px 18px 0 0;
+  padding-bottom: 0.5rem;
+  background: transparent;
+  box-shadow: none;
+}
+
+/* Responsive para modal de edición */
+@media (max-width: 600px) {
+  .myprofile-edit-modal {
+    max-width: 99vw !important;
+    padding: 0 0.5rem 1rem 0.5rem;
+  }
+  .myprofile-edit-modal .myprofile-modal-header {
+    padding: 1rem 0.5rem 0.5rem 0.5rem;
+  }
+}
+
+/* Responsive: menor padding en pantallas pequeñas */
+@media (max-width: 600px) {
+  .myprofile-modal-header,
+  .myprofile-actions-bottom {
+    padding: 1rem;
+  }
+  .myprofile-content-scroll {
+    padding: 0 0 1rem 0;
+  }
+  .myprofile-container {
+    padding: 1rem 0.5rem; /* menos padding lateral en móvil */
+    border-radius: 7px;
+    margin: 1rem 0;
+  }
+  .myprofile-close-btn {
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+  }
+  .myprofile-edit-form input {
+    font-size: 0.98rem;
+    padding: 0.5rem 0.7rem;
+  }
+}
+
+.myprofile-right-col {
+  min-height: 220px;
+  height: auto;
+  max-height: none;
+  overflow-y: auto;
+  flex-shrink: 0;
+  /* Asegura que los dispositivos se apilen correctamente en móvil */
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+}
+
+/* Corrige el grid de dispositivos en móvil */
+.myprofile-right-col > div {
+  display: flex !important;
+  flex-wrap: wrap;
+  gap: 1em;
+  justify-content: flex-start;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Tarjeta de dispositivo en móvil */
+.myprofile-right-col > div > div {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  padding: 1.2em 1em 1em 1em;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  width: 160px;
+  min-width: 140px;
+  max-width: 48vw;
+  min-height: 170px;
+  margin-bottom: 0.5em;
+  box-sizing: border-box;
+  transition: box-shadow 0.18s;
+}
+
+@media (max-width: 600px) {
+  .myprofile-right-col > div > div {
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+  }
+}
+
+/* Mejora el contraste del icono de dispositivo */
+.myprofile-right-col svg {
+  color: #2563eb !important;
+  filter: none;
+}
+

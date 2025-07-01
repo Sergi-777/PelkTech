@@ -1,0 +1,27 @@
+:root {
+  /* Base Grayscale Palette */
+  --color-white: #ffffff;
+  --color-gray-50: #f9f9f9;
+  --color-gray-100: #f5f5f5;
+  --color-gray-200: #e5e5e5;
+  --color-gray-300: #d4d4d4;
+  --color-gray-400: #a3a3a3;
+  --color-gray-500: #737373;
+  --color-gray-600: #525252;
+  --color-gray-700: #404040;
+  --color-gray-800: #262626;
+  --color-gray-900: #1a1a1a;
+  --color-black: #000000;
+
+  /* Semantic Mapping */
+  --color-bg: var(--color-gray-100);
+  --color-surface: var(--color-white);
+  --color-border: var(--color-gray-300);
+  --color-text: var(--color-gray-900);
+  --color-muted: var(--color-gray-500);
+  --color-primary: var(--color-black);
+  --color-secondary: var(--color-gray-700);
+  --color-accent: var(--color-gray-800);
+  --color-hover: var(--color-gray-600);
+  --color-disabled: var(--color-gray-300);
+}

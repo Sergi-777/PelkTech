@@ -1,0 +1,425 @@
+[
+  {
+    "id": "0000000000001",
+    "name": "Laptop Dell Inspiron 15",
+    "category": "Computadoras",
+    "description": "Portátil con procesador Intel Core i5, 8GB RAM y SSD de 512GB.",
+    "price": 2450000,
+    "stock": 20,
+    "url": "https://tecnoplaza.com.co/cdn/shop/files/memoria-ram-adata-b5f6c258-877e-46dd-9098-593a49196806.jpg?v=1743709527&width=1445"
+  },
+  {
+    "id": "0000000000002",
+    "name": "Monitor LG 27” UltraGear",
+    "category": "Monitores",
+    "description": "Monitor gaming IPS FHD 1ms con tasa de refresco de 144Hz.",
+    "price": 1350000,
+    "stock": 30,
+    "url": "https://symcomputadores.com/wp-content/uploads/2022/09/5-2.jpg"
+  },
+  {
+    "id": "0000000000003",
+    "name": "Teclado Mecánico Logitech G413",
+    "category": "Periféricos",
+    "description": "Teclado retroiluminado con switches Romer-G para gaming.",
+    "price": 320000,
+    "stock": 50,
+    "url": "https://www.janus.com.co/cdn/shop/files/rgb16.jpg?v=1714177300"
+  },
+  {
+    "id": "0000000000004",
+    "name": "Mouse Logitech MX Master 3",
+    "category": "Periféricos",
+    "description": "Mouse ergonómico inalámbrico con múltiples botones personalizables.",
+    "price": 410000,
+    "stock": 40,
+    "url": "https://m.media-amazon.com/images/I/61t4B8GodTL.jpg"
+  },
+  {
+    "id": "0000000000005",
+    "name": "HP Pavilion Desktop",
+    "category": "Computadoras",
+    "description": "PC de escritorio con Ryzen 5, 16GB RAM y SSD 1TB.",
+    "price": 3150000,
+    "stock": 15,
+    "url": "https://cdnx.jumpseller.com/tienda-gamer-medellin/image/47773317/resize/610/610?1713403170"
+  },
+  {
+    "id": "0000000000006",
+    "name": "Tarjeta Gráfica NVIDIA RTX 4060",
+    "category": "Componentes",
+    "description": "GPU con 8GB GDDR6 ideal para gaming y edición.",
+    "price": 1890000,
+    "stock": 25,
+    "url": "https://reset.net.co/wp-content/uploads/2024/02/Procesador-AMD-Ryzen-5-5600G-principal.webp"
+  },
+  {
+    "id": "0000000000007",
+    "name": "Memoria RAM Corsair Vengeance 16GB",
+    "category": "Componentes",
+    "description": "DDR4 3200MHz para rendimiento óptimo en gaming.",
+    "price": 350000,
+    "stock": 60,
+    "url": "https://tienvir.co/cdn/shop/files/zahcnma9_b2cf3897-2ab0-4b65-b662-041f3697b674.png?v=1717114868&width=800"
+  },
+  {
+    "id": "0000000000008",
+    "name": "SSD Kingston NV2 1TB",
+    "category": "Almacenamiento",
+    "description": "Disco SSD PCIe Gen 4 NVMe para altas velocidades de lectura.",
+    "price": 410000,
+    "stock": 70,
+    "url": "https://symcomputadores.com/wp-content/uploads/2022/09/AMD-RYZEN-7-5700X.png"
+  },
+  {
+    "id": "0000000000009",
+    "name": "Placa Madre ASUS TUF B660M-PLUS",
+    "category": "Componentes",
+    "description": "Placa madre microATX para Intel 12va gen con WiFi y Aura Sync.",
+    "price": 690000,
+    "stock": 22,
+    "url": "https://compubit.com.co/wp-content/uploads/2024/08/procesadores-03-1.jpg"
+  },
+  {
+    "id": "0000000000010",
+    "name": "Gabinete Cooler Master MB511 ARGB",
+    "category": "Componentes",
+    "description": "Chasis con panel frontal en malla y tres ventiladores ARGB.",
+    "price": 360000,
+    "stock": 18,
+    "url": "https://clonesyperifericos.com/wp-content/uploads/2024/01/Procesador-AMD-Ryzen-5-8600G-5.0-GHz.jpg"
+  },
+  {
+    "id": "0000000000011",
+    "name": "Fuente de Poder EVGA 650W 80+ Bronze",
+    "category": "Componentes",
+    "description": "Fuente certificada 80+ Bronze con ventilador silencioso.",
+    "price": 280000,
+    "stock": 35,
+    "url": "https://tienvir.co/cdn/shop/files/cv5zkrmq.png?v=1734473398"
+  },
+  {
+    "id": "0000000000012",
+    "name": "Combo Razer Cynosa V2 + DeathAdder",
+    "category": "Periféricos",
+    "description": "Teclado RGB con mouse ergonómico para juegos.",
+    "price": 495000,
+    "stock": 26,
+    "url": "https://www.gamerscolombia.com/img/products/Tarjeta-grfica-NVIDIA-Gigabyte-RTX-4070-WINDFORCE-12GB/17005851491.png"
+  },
+  {
+    "id": "0000000000013",
+    "name": "Monitor Acer Nitro 27” QHD",
+    "category": "Monitores",
+    "description": "Monitor IPS 2560x1440 con 165Hz y Freesync Premium.",
+    "price": 1580000,
+    "stock": 10,
+    "url": "https://www.asus.com/media/odin/websites/MX/News/xm0zlcq9k05pginq/30502.jpg"
+  },
+  {
+    "id": "0000000000014",
+    "name": "Webcam Logitech C920 HD Pro",
+    "category": "Accesorios",
+    "description": "Resolución 1080p para videollamadas nítidas.",
+    "price": 310000,
+    "stock": 42,
+    "url": "https://symcomputadores.com/wp-content/uploads/2024/12/GeForce-RTX%E2%84%A2-3060-VENTUS-2X-12G-OC-1.png"
+  },
+  {
+    "id": "0000000000015",
+    "name": "Silla Gamer Cougar Armor One",
+    "category": "Mobiliario",
+    "description": "Ergonómica con soporte lumbar ajustable.",
+    "price": 1150000,
+    "stock": 9,
+    "url": "https://www.pcware.com.co/wp-content/uploads/2023/12/4473_001.jpg"
+  },
+  {
+    "id": "0000000000016",
+    "name": "Kit Raspberry Pi 4 8GB",
+    "category": "Computadoras",
+    "description": "MiniPC para proyectos con puerto HDMI y Wi-Fi.",
+    "price": 460000,
+    "stock": 28,
+    "url": "https://lasus.com.co/220171-large_default/disco-duro-interno-wd-purple-2tb.jpg"
+  },
+  {
+    "id": "0000000000017",
+    "name": "Router ASUS RT-AX86U",
+    "category": "Redes",
+    "description": "Router Wi-Fi 6 dual band para juegos de baja latencia.",
+    "price": 890000,
+    "stock": 13,
+    "url": "https://compucentro.co/wp-content/uploads/3-26.jpg"
+  },
+  {
+    "id": "0000000000018",
+    "name": "Enfriamiento Líquido Cooler Master ML240L",
+    "category": "Componentes",
+    "description": "Sistema de refrigeración líquida con iluminación ARGB.",
+    "price": 520000,
+    "stock": 14,
+    "url": "https://jyrtechnology.com.co/wp-content/uploads/2023/07/JX123-1.jpg"
+  },
+  {
+    "id": "0000000000019",
+    "name": "Micrófono Blue Yeti USB",
+    "category": "Accesorios",
+    "description": "Micrófono profesional para grabación y streaming.",
+    "price": 480000,
+    "stock": 21,
+    "url": "https://jyrtechnology.com.co/wp-content/uploads/2023/06/JX122-1.jpg"
+  },
+  {
+    "id": "0000000000020",
+    "name": "Impresora HP DeskJet 3775",
+    "category": "Impresoras",
+    "description": "Multifuncional compacta con conexión Wi-Fi y escáner.",
+    "price": 329000,
+    "stock": 16,
+    "url": "https://www.pcware.com.co/wp-content/uploads/2023/06/Impresora-HP-3775.jpg"
+  },
+  {
+    "id": "0000000000021",
+    "name": "Cámara de Seguridad TP-Link Tapo C200",
+    "category": "Seguridad",
+    "description": "Cámara IP rotativa con visión nocturna y control remoto.",
+    "price": 189000,
+    "stock": 34,
+    "url": "https://lasus.com.co/23456-large_default/tp-link-tapo-c200.jpg"
+  },
+  {
+    "id": "0000000000022",
+    "name": "Cable HDMI 2.1 4K 3m",
+    "category": "Accesorios",
+    "description": "Alta velocidad compatible con 8K, ARC, HDR.",
+    "price": 39000,
+    "stock": 100,
+    "url": "https://symcomputadores.com/wp-content/uploads/2023/11/cable-hdmi.jpg"
+  },
+  {
+    "id": "0000000000023",
+    "name": "UPS Forza 1200VA",
+    "category": "Energía",
+    "description": "Sistema de respaldo con regulación automática de voltaje.",
+    "price": 295000,
+    "stock": 19,
+    "url": "https://compubit.com.co/wp-content/uploads/2024/01/ups-forza.jpg"
+  },
+  {
+    "id": "0000000000024",
+    "name": "Proyector Epson PowerLite X49",
+    "category": "Proyección",
+    "description": "Proyector XGA con 3600 lúmenes ideal para presentaciones.",
+    "price": 1890000,
+    "stock": 7,
+    "url": "https://www.pcware.com.co/wp-content/uploads/2023/08/epson-x49.jpg"
+  },
+  {
+    "id": "0000000000025",
+    "name": "Consola Xbox Series S",
+    "category": "Consolas",
+    "description": "Consola digital de nueva generación con 512GB SSD.",
+    "price": 1450000,
+    "stock": 12,
+    "url": "https://www.gamerscolombia.com/img/products/Xbox-Series-S.jpg"
+  },
+  {
+    "id": "0000000000026",
+    "name": "Tablet Samsung Galaxy Tab A8",
+    "category": "Tablets",
+    "description": "Pantalla de 10.5”, 4GB RAM, 64GB almacenamiento.",
+    "price": 899000,
+    "stock": 22,
+    "url": "https://lasus.com.co/22145-large_default/tablet-samsung-galaxy-tab-a8.jpg"
+  },
+  {
+    "id": "0000000000027",
+    "name": "Apple Magic Trackpad",
+    "category": "Periféricos",
+    "description": "Trackpad multitáctil recargable con Bluetooth.",
+    "price": 635000,
+    "stock": 11,
+    "url": "https://m.media-amazon.com/images/I/71lFkGdIhnL.jpg"
+  },
+  {
+    "id": "0000000000028",
+    "name": "Laptop Lenovo ThinkBook 14",
+    "category": "Ofimática",
+    "description": "Portátil empresarial con Intel i5 y pantalla FHD antirreflejo.",
+    "price": 2290000,
+    "stock": 17,
+    "url": "https://tecnoplaza.com.co/cdn/shop/files/memoria-ram-adata-b5f6c258-877e-46dd-9098-593a49196806.jpg?v=1743709527&width=1445"
+  },
+  {
+    "id": "0000000000029",
+    "name": "Pantalla Samsung LED 24” Curva",
+    "category": "Pantallas",
+    "description": "Monitor curvo para trabajo y entretenimiento con Eye Saver Mode.",
+    "price": 799000,
+    "stock": 20,
+    "url": "https://symcomputadores.com/wp-content/uploads/2022/09/5-2.jpg"
+  },
+  {
+    "id": "0000000000030",
+    "name": "Teclado Redragon Kumara K552",
+    "category": "Gaming",
+    "description": "Mecánico RGB con switches Outemu Blue.",
+    "price": 230000,
+    "stock": 40,
+    "url": "https://www.janus.com.co/cdn/shop/files/rgb16.jpg?v=1714177300"
+  },
+  {
+    "id": "0000000000031",
+    "name": "Mouse Vertical Ergonómico Delux",
+    "category": "Ergonomía",
+    "description": "Diseño vertical que previene lesiones por esfuerzo repetitivo.",
+    "price": 120000,
+    "stock": 60,
+    "url": "https://m.media-amazon.com/images/I/61t4B8GodTL.jpg"
+  },
+  {
+    "id": "0000000000032",
+    "name": "MiniPC HP ProDesk 400 G6",
+    "category": "Ofimática",
+    "description": "Compacto con Intel Core i3, SSD 256GB y 8GB RAM.",
+    "price": 1990000,
+    "stock": 13,
+    "url": "https://cdnx.jumpseller.com/tienda-gamer-medellin/image/47773317/resize/610/610?1713403170"
+  },
+  {
+    "id": "0000000000033",
+    "name": "Aceleradora de Video NVIDIA T400",
+    "category": "Diseño Gráfico",
+    "description": "Ideal para estaciones de trabajo en CAD y multimedia.",
+    "price": 1490000,
+    "stock": 8,
+    "url": "https://reset.net.co/wp-content/uploads/2024/02/Procesador-AMD-Ryzen-5-5600G-principal.webp"
+  },
+  {
+    "id": "0000000000034",
+    "name": "Memoria RAM ADATA 8GB 3200MHz",
+    "category": "Actualización",
+    "description": "Ideal para mejorar rendimiento de laptops modernas.",
+    "price": 180000,
+    "stock": 48,
+    "url": "https://tienvir.co/cdn/shop/files/zahcnma9_b2cf3897-2ab0-4b65-b662-041f3697b674.png?v=1717114868&width=800"
+  },
+  {
+    "id": "0000000000035",
+    "name": "Disco Duro NVMe WD Black 500GB",
+    "category": "Almacenamiento Rápido",
+    "description": "NVMe PCIe 4.0 para sistemas gaming exigentes.",
+    "price": 380000,
+    "stock": 33,
+    "url": "https://symcomputadores.com/wp-content/uploads/2022/09/AMD-RYZEN-7-5700X.png"
+  },
+  {
+    "id": "0000000000036",
+    "name": "Placa Base ASRock B550M Steel Legend",
+    "category": "Hardware",
+    "description": "Compatibilidad Ryzen y componentes de alto rendimiento.",
+    "price": 610000,
+    "stock": 19,
+    "url": "https://compubit.com.co/wp-content/uploads/2024/08/procesadores-03-1.jpg"
+  },
+  {
+    "id": "0000000000037",
+    "name": "Caja ATX Thermaltake Versa H18",
+    "category": "Gabinetes",
+    "description": "Ideal para PCs compactas con ventilación mejorada.",
+    "price": 240000,
+    "stock": 29,
+    "url": "https://clonesyperifericos.com/wp-content/uploads/2024/01/Procesador-AMD-Ryzen-5-8600G-5.0-GHz.jpg"
+  },
+  {
+    "id": "0000000000038",
+    "name": "Fuente de Poder Corsair CV550",
+    "category": "Energía",
+    "description": "Certificación 80+ Bronze, ideal para equipos de entrada.",
+    "price": 260000,
+    "stock": 42,
+    "url": "https://tienvir.co/cdn/shop/files/cv5zkrmq.png?v=1734473398"
+  },
+  {
+    "id": "0000000000039",
+    "name": "Kit Combo Gamer Trust GXT 838",
+    "category": "Gaming",
+    "description": "Incluye teclado, mouse, alfombrilla y auriculares.",
+    "price": 360000,
+    "stock": 31,
+    "url": "https://www.gamerscolombia.com/img/products/Tarjeta-grfica-NVIDIA-Gigabyte-RTX-4070-WINDFORCE-12GB/17005851491.png"
+  },
+  {
+    "id": "0000000000040",
+    "name": "Monitor MSI Optix G24",
+    "category": "Escritorio",
+    "description": "Monitor LED 144Hz con tecnología Anti-Flicker.",
+    "price": 1280000,
+    "stock": 15,
+    "url": "https://www.asus.com/media/odin/websites/MX/News/xm0zlcq9k05pginq/30502.jpg"
+  },
+  {
+    "id": "0000000000041",
+    "name": "Cámara Web Aukey Full HD 1080p",
+    "category": "Teletrabajo",
+    "description": "Micrófono estéreo integrado y enfoque automático.",
+    "price": 250000,
+    "stock": 55,
+    "url": "https://symcomputadores.com/wp-content/uploads/2024/12/GeForce-RTX%E2%84%A2-3060-VENTUS-2X-12G-OC-1.png"
+  },
+  {
+    "id": "0000000000042",
+    "name": "Silla Ejecutiva Ergonómica",
+    "category": "Oficina",
+    "description": "Espaldar reclinable, soporte lumbar y reposabrazos.",
+    "price": 990000,
+    "stock": 6,
+    "url": "https://www.pcware.com.co/wp-content/uploads/2023/12/4473_001.jpg"
+  },
+  {
+    "id": "0000000000043",
+    "name": "Mini Kit Arduino UNO R3",
+    "category": "Educación",
+    "description": "Incluye sensores, cables y placa Arduino oficial.",
+    "price": 145000,
+    "stock": 45,
+    "url": "https://lasus.com.co/220171-large_default/disco-duro-interno-wd-purple-2tb.jpg"
+  },
+  {
+    "id": "0000000000044",
+    "name": "Access Point TP-Link EAP225",
+    "category": "Redes Empresariales",
+    "description": "Wi-Fi AC1200 para cobertura en oficinas.",
+    "price": 369000,
+    "stock": 23,
+    "url": "https://compucentro.co/wp-content/uploads/3-26.jpg"
+  },
+  {
+    "id": "0000000000045",
+    "name": "Refrigeración Líquida Thermaltake TH120",
+    "category": "Modding",
+    "description": "Compacto y con iluminación RGB para builds llamativas.",
+    "price": 395000,
+    "stock": 17,
+    "url": "https://jyrtechnology.com.co/wp-content/uploads/2023/07/JX123-1.jpg"
+  },
+  {
+    "id": "0000000000046",
+    "name": "Micrófono Lavalier Boya BY-M1",
+    "category": "Grabación",
+    "description": "Ideal para entrevistas y videoblogs con conector 3.5mm.",
+    "price": 99000,
+    "stock": 78,
+    "url": "https://jyrtechnology.com.co/wp-content/uploads/2023/06/JX122-1.jpg"
+  },
+  {
+    "id": "0000000000047",
+    "name": "Laptop Acer Chromebook 311",
+    "category": "Educación",
+    "description": "Portátil ligera con ChromeOS, ideal para estudiantes.",
+    "price": 780000,
+    "stock": 32,
+    "url": "https://tecnoplaza.com.co/cdn/shop/files/memoria-ram-adata-b5f6c258-877e-46dd-9098-593a49196806.jpg?v=1743709527&width=1445"
+  }
+]
