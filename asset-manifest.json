@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/PelkTech/static/css/main.90cca853.css",
-    "main.js": "/PelkTech/static/js/main.d56fba5c.js",
+    "main.js": "/PelkTech/static/js/main.ee5f7d1c.js",
     "static/js/453.c5c14f4d.chunk.js": "/PelkTech/static/js/453.c5c14f4d.chunk.js",
     "index.html": "/PelkTech/index.html",
     "main.90cca853.css.map": "/PelkTech/static/css/main.90cca853.css.map",
-    "main.d56fba5c.js.map": "/PelkTech/static/js/main.d56fba5c.js.map",
+    "main.ee5f7d1c.js.map": "/PelkTech/static/js/main.ee5f7d1c.js.map",
     "453.c5c14f4d.chunk.js.map": "/PelkTech/static/js/453.c5c14f4d.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.90cca853.css",
-    "static/js/main.d56fba5c.js"
+    "static/js/main.ee5f7d1c.js"
   ]
 }
