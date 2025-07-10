@@ -1,0 +1,115 @@
+.ventas-section {
+  background: #fff;
+  border-radius: 1.2em;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+  padding: 2em 1.5em 1.5em 1.5em;
+  margin-bottom: 2em;
+}
+.ventas-total-generado {
+  font-weight: 600;
+  margin-bottom: 0.7em;
+  color: #2563eb;
+  font-size: 1.15em;
+}
+.ventas-estado-filtros {
+  margin-bottom: 1.2em;
+}
+.ventas-estado-btn {
+  background: #e0e7ff;
+  color: #1e293b;
+  border: none;
+  border-radius: 1.2em;
+  padding: 0.5em 1.2em;
+  margin-right: 0.5em;
+  margin-bottom: 0.4em;
+  cursor: pointer;
+  font-size: 1em;
+  transition: background 0.18s, color 0.18s;
+}
+.ventas-estado-btn.selected,
+.ventas-estado-btn:hover {
+  background: #2563eb;
+  color: #fff;
+}
+.ventas-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.ventas-li {
+  background: #f1f5f9;
+  border-radius: 0.9em;
+  margin-bottom: 1em;
+  padding: 1.1em 1.2em;
+  cursor: pointer;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+  transition: background 0.16s;
+  border: 1px solid #e0e7ef;
+}
+.ventas-li:hover {
+  background: #e0e7ff;
+}
+.ventas-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-weight: 600;
+  margin-bottom: 0.5em;
+}
+.ventas-arrow {
+  font-size: 1.1em;
+  transition: transform 0.18s;
+  margin-left: 0.7em;
+}
+.ventas-arrow.expanded {
+  transform: rotate(90deg);
+}
+.ventas-estado {
+  font-weight: bold;
+  color: #2563eb;
+}
+.ventas-detalle {
+  margin-bottom: 0.6em;
+  color: #374151;
+}
+.ventas-productos {
+  list-style: none;
+  padding: 0;
+  margin: 0.5em 0 0.5em 0;
+}
+.ventas-producto {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.4em;
+}
+.ventas-img {
+  width: 38px;
+  height: 38px;
+  object-fit: cover;
+  border-radius: 0.5em;
+  margin-right: 0.7em;
+  border: 1px solid #cbd5e1;
+}
+.ventas-producto-nombre {
+  font-weight: 500;
+}
+.ventas-producto-detalle {
+  font-size: 0.97em;
+  color: #64748b;
+}
+.ventas-producto-sin {
+  color: #64748b;
+  font-style: italic;
+}
+.ventas-total,
+.ventas-fecha {
+  margin-top: 0.5em;
+  font-weight: 500;
+  color: #1e293b;
+}
+.ventas-loading {
+  color: #64748b;
+  font-style: italic;
+  margin: 1.5em 0;
+  text-align: center;
+}

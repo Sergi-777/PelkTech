@@ -177,3 +177,17 @@
 .productos-admin-modal button[type="submit"]:hover:not(:disabled) {
   background: #1d4ed8;
 }
+.productos-admin-delete-btn {
+  margin-top: 8px;
+  padding: 6px 12px;
+  background-color: #e74c3c;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.2s ease-in-out;
+}
+
+.productos-admin-delete-btn:hover {
+  background-color: #c0392b;
+}

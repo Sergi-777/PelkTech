@@ -38,7 +38,6 @@ p {
   margin-top: 20px;
   font-size: 1.5em;
   color: var(--color-text);
-  text-shadow: 0 2px 5px var(--color-muted);
   animation: fadeInUp 1s ease forwards;
   opacity: 0;
   animation-delay: 0.3s;

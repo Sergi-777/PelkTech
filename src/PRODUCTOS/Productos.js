@@ -23,65 +23,89 @@ export default function Productos() {
 
   useEffect(() => {
     const fetchProductos = async () => {
-      const db = getFirestore();
-      const productosCol = collection(db, "PRODUCTOS");
-      const productosSnapshot = await getDocs(productosCol);
-      const productosList = productosSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-      setProductos(productosList);
+      try {
+        const res = await fetch('http://localhost:3001/productos');
+        const data = await res.json();
+        setProductos(data);
+      } catch (err) {
+        alert('Error al cargar productos');
+      }
     };
     fetchProductos();
+    const interval = setInterval(fetchProductos, 1000);
+    return () => clearInterval(interval);
   }, []);
 
+
   const handleAdd = async (e) => {
-    e.preventDefault();
-    // Validar campos obligatorios
-    const { name, description, category, price, stock } = addForm;
-    if (!name || !description || !category || !price || !stock) {
-      alert('Todos los campos son obligatorios excepto la URL.');
-      return;
-    }
-    setAddLoading(true);
-    try {
-      const db = getFirestore();
-      // Buscar el ID más alto existente
-      let maxId = 0;
-      productos.forEach(p => {
-        const n = Number(p.id);
-        if (!isNaN(n) && n > maxId) maxId = n;
-      });
-      const newIdNum = maxId + 1;
-      const id = String(newIdNum).padStart(13, '0');
-      await setDoc(doc(db, "PRODUCTOS", id), { ...addForm, price: Number(price), stock: Number(stock), id });
-      setProductos(prev => [...prev, { ...addForm, price: Number(price), stock: Number(stock), id }]);
-      setShowAdd(false);
-      setAddForm(initialForm);
-    } catch (err) {
-      alert('Error al agregar producto');
-    }
-    setAddLoading(false);
-  };
+  e.preventDefault();
+  const { name, description, category, price, stock } = addForm;
+  if (!name || !description || !category || !price || !stock) {
+    alert('Todos los campos son obligatorios excepto la URL.');
+    return;
+  }
+  setAddLoading(true);
+  try {
+    const res = await fetch('http://localhost:3001/productos', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ ...addForm, price: Number(price), stock: Number(stock) })
+    });
+    const newProduct = await res.json();
+    setProductos(prev => [...prev, newProduct]);
+    setShowAdd(false);
+    setAddForm(initialForm);
+  } catch (err) {
+    alert('Error al agregar producto');
+  }
+  setAddLoading(false);
+};
+
 
   const handleEdit = async (e) => {
-    e.preventDefault();
-    const { name, description, category, price, stock } = editForm;
-    if (!name || !description || !category || !price || !stock) {
-      alert('Todos los campos son obligatorios excepto la URL.');
-      return;
+  e.preventDefault();
+  const { name, description, category, price, stock } = editForm;
+  if (!name || !description || !category || !price || !stock) {
+    alert('Todos los campos son obligatorios excepto la URL.');
+    return;
+  }
+  setEditLoading(true);
+  try {
+    await fetch(`http://localhost:3001/productos/${editForm.id}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ ...editForm, price: Number(price), stock: Number(stock) })
+    });
+    setProductos(prev =>
+      prev.map((p, idx) => idx === editIdx ? { ...editForm, price: Number(price), stock: Number(stock) } : p)
+    );
+    setEditIdx(null);
+    setEditForm(initialForm);
+  } catch (err) {
+    alert('Error al editar producto');
+  }
+  setEditLoading(false);
+};
+const handleDelete = async (id) => {
+  const confirm = window.confirm("¿Estás seguro de que deseas eliminar este producto?");
+  if (!confirm) return;
+
+  try {
+    const res = await fetch(`http://localhost:3001/productos/${id}`, {
+      method: 'DELETE'
+    });
+
+    if (!res.ok) {
+      throw new Error('Error al eliminar producto');
     }
-    setEditLoading(true);
-    try {
-      const db = getFirestore();
-      await updateDoc(doc(db, "PRODUCTOS", editForm.id), { ...editForm, price: Number(price), stock: Number(stock) });
-      setProductos(prev =>
-        prev.map((p, idx) => idx === editIdx ? { ...editForm, price: Number(price), stock: Number(stock) } : p)
-      );
-      setEditIdx(null);
-      setEditForm(initialForm);
-    } catch (err) {
-      alert('Error al editar producto');
-    }
-    setEditLoading(false);
-  };
+
+    setProductos(prev => prev.filter(p => p.id !== id));
+  } catch (error) {
+    alert('Error eliminando producto');
+    console.error(error);
+  }
+};
+
 
   return (
     <div className="productos-admin-container">
@@ -150,6 +174,18 @@ export default function Productos() {
             <div className="productos-admin-modal-btns">
               <button type="submit" disabled={editLoading}>{editLoading ? 'Guardando...' : 'Guardar'}</button>
               <button type="button" onClick={() => setEditIdx(null)}>Cancelar</button>
+              <button
+  className="productos-admin-delete-btn"
+  type="button"
+  onClick={() => {
+    handleDelete(editForm.id);
+    setEditIdx(null); // cerrar modal después
+  }}
+>
+  🗑️ Eliminar
+</button>
+
+
             </div>
           </form>
         </div>

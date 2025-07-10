@@ -1,18 +1,14 @@
 import React, { useState, useEffect } from 'react';
-// Importa Firestore y helpers
-import { db } from '../firebase';
-import { doc, getDoc, updateDoc, serverTimestamp, onSnapshot, updateDoc as updateDocFirestore, deleteField } from 'firebase/firestore';
 import AgregarDispositivos from '../AGREGARDISPOSITIVOS/AgregarDispositivos';
-import { MdDevices } from 'react-icons/md'; // Icono de dispositivo
-import { FiMoreVertical } from 'react-icons/fi'; // Icono de tres puntos
+import { MdDevices } from 'react-icons/md';
+import { FiMoreVertical } from 'react-icons/fi';
 import ConfirmationMessage from '../RESOURCES/CONFIRMATIONDELETE/ConfirmationMessage';
-import Mantenimiento from '../MANTENIMIENTO/Mantenimiento'; // Importa el modal de mantenimiento
+import Mantenimiento from '../MANTENIMIENTO/Mantenimiento';
 import './MyProfileweb.css';
 import './MyProfileMovil.css';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-// Hook para detectar si es móvil
 function useIsMobile() {
   const [isMobile, setIsMobile] = useState(() =>
     typeof window !== 'undefined'
@@ -31,90 +27,157 @@ function useIsMobile() {
 
 const MyProfile = ({ open, onClose, user, userName, userLastName }) => {
   const [editing, setEditing] = useState(false);
-  const [showEditModal, setShowEditModal] = useState(false); // Abre el modal de edición
+  const [showEditModal, setShowEditModal] = useState(false);
   const [form, setForm] = useState({
-    nombre: userName || '',
+    name: userName || '',
     apellido: userLastName || '',
     email: user?.email || '',
     telefono: user?.telefono || '',
     direccion: user?.direccion || ''
   });
-  const [timestamp, setTimestamp] = useState(user?.timestamp || null);
+  const [timestamp, setTimestamp] = useState(null);
   const [showAgregarDispositivo, setShowAgregarDispositivo] = useState(false);
-  const [dispositivoEditando, setDispositivoEditando] = useState(null); // Nuevo estado para edición
+  const [dispositivoEditando, setDispositivoEditando] = useState(null);
   const [dispositivos, setDispositivos] = useState([]);
-  const [menuOpen, setMenuOpen] = useState(null); // id del dispositivo con menú abierto
+  const [menuOpen, setMenuOpen] = useState(null);
   const [confirmationOpen, setConfirmationOpen] = useState(false);
   const [dispositivoAEliminar, setDispositivoAEliminar] = useState(null);
-  const [carritos, setCarritos] = useState([]); // Nuevo estado para historial de carritos
-  const [carritoExpandido, setCarritoExpandido] = useState(null); // Nuevo estado para expandir detalles
-  const [estadoFiltro, setEstadoFiltro] = useState('Todas'); // Nuevo estado para filtro de estado
-  const [showMantenimiento, setShowMantenimiento] = useState(false); // Nuevo estado para modal de mantenimiento
-  const [dispositivoMantenimiento, setDispositivoMantenimiento] = useState(null); // Dispositivo seleccionado para mantenimiento
+  const [carritos, setCarritos] = useState([]);
+  const [carritoExpandido, setCarritoExpandido] = useState(null);
+  const [estadoFiltro, setEstadoFiltro] = useState('Todas');
+  const [showMantenimiento, setShowMantenimiento] = useState(false);
+  const [dispositivoMantenimiento, setDispositivoMantenimiento] = useState(null);
   const isMobile = useIsMobile();
+  const [historialCompras, setHistorialCompras] = useState([]);
+  const [historialMantenimientos, setHistorialMantenimientos] = useState([]);
 
-  // Sincroniza datos en tiempo real desde Firestore
+
+
+  // Cargar datos del cliente
   useEffect(() => {
     if (!user?.email) return;
-    const userRef = doc(db, 'CLIENTES', user.email);
-    const unsubscribe = onSnapshot(userRef, (snap) => {
-      if (snap.exists()) {
-        const data = snap.data();
+    fetch(`http://localhost:3001/clientes/${user.email}`)
+      .then(res => res.json())
+      .then(data => {
         setForm({
           nombre: data.name || '',
-          apellido: data.lastName || '',
+          apellido: data.apellido || '',
           email: data.email || '',
           telefono: data.telefono || '',
           direccion: data.direccion || ''
         });
         setTimestamp(data.timestamp || null);
-      }
-    });
-    return () => unsubscribe();
+      })
+      .catch(() => toast.error("Error al cargar datos del perfil"));
   }, [user?.email]);
+  
 
-  // Snapshot para dispositivos del usuario
   useEffect(() => {
-    if (!user?.email) return;
-    const dispositivosRef = doc(db, 'DISPOSITIVOS', user.email);
-    const unsubscribe = onSnapshot(dispositivosRef, (snap) => {
-      if (snap.exists()) {
-        const data = snap.data();
-        // Convierte el objeto de dispositivos en un array [{id, ...info}]
-        const dispositivosArr = Object.entries(data).map(([id, info]) => ({
-          id,
-          ...info
-        }));
-        setDispositivos(dispositivosArr);
-      } else {
-        setDispositivos([]);
-      }
-    });
-    return () => unsubscribe();
-  }, [user?.email]);
+  if (!user?.email) return;
 
-  // Snapshot para historial de carritos del usuario
+  const fetchHistorial = async () => {
+    try {
+      const [comprasRes, mantRes] = await Promise.all([
+        fetch(`http://localhost:3001/historial_compras/${user.email}`),
+        fetch(`http://localhost:3001/historial_mantenimiento/${user.email}`)
+      ]);
+
+      const compras = await comprasRes.json();
+      const mantenimientos = await mantRes.json();
+
+      const comprasConTipo = compras.map((c) => ({
+        ...c,
+        type: 'PRODUCTOS',
+        createdAt: c.created_at,
+      }));
+
+      // NUEVO: obtener nombre real del técnico si encargado es email
+      const mantenimientosConTipo = await Promise.all(
+        mantenimientos.map(async (m) => {
+          let nombreTecnico = m.encargado; // fallback
+
+          // Si es un email, busca el nombre real
+          if (m.encargado && m.encargado.includes('@')) {
+            try {
+              const res = await fetch(`http://localhost:3001/empleados/nombre/${encodeURIComponent(m.encargado)}`);
+              if (res.ok) {
+                const data = await res.json();
+                nombreTecnico = data.name;
+              }
+            } catch {
+              // mantener el email si falla
+            }
+          }
+
+          return {
+            ...m,
+            type: 'SERVICIO',
+            createdAt: m.created_at,
+            dispositivo: dispositivos.find(d => d.id === m.dispositivo_id) || {},
+            problema: m.descripcion,
+            como: '',
+            tecnico_nombre: nombreTecnico
+          };
+        })
+      );
+
+      const historialFusionado = [...comprasConTipo, ...mantenimientosConTipo]
+        .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+
+      setCarritos(historialFusionado);
+
+    } catch (err) {
+      toast.error("Error al cargar historial");
+    }
+  };
+
+  fetchHistorial();
+}, [user?.email, dispositivos]);
+
+
+  // Obtener dispositivos desde MySQL
   useEffect(() => {
-    if (!user?.email) return;
-    const historialRef = doc(db, 'HISTORIAL', user.email);
-    const unsubscribe = onSnapshot(historialRef, (snap) => {
-      if (snap.exists()) {
-        const data = snap.data();
-        // Filtra solo los campos que sean tipo mapa (objeto plano, no array, no null)
-        const carritosArr = Object.entries(data)
-          .filter(([key, value]) =>
-            typeof value === 'object' &&
-            value !== null &&
-            !Array.isArray(value)
-          )
-          .map(([id, carrito]) => ({ id, ...carrito }));
-        setCarritos(carritosArr);
-      } else {
-        setCarritos([]);
-      }
-    });
-    return () => unsubscribe();
-  }, [user?.email]);
+  if (!user?.email) return;
+
+  const fetchDispositivos = () => {
+    fetch(`http://localhost:3001/dispositivos/${user.email}`)
+      .then(res => res.json())
+      .then(data => {
+        setDispositivos(data.map(d => ({
+          id: d.id,
+          name: d.name,
+          marca: d.marca,
+          modelo: d.modelo,
+          serie: d.serie,
+          observaciones: d.observaciones,
+          fecha_creacion: d.fecha_creacion
+        })));
+      })
+      .catch(() => toast.error("Error al cargar dispositivos"));
+  };
+
+  // Ejecutar inmediatamente
+  fetchDispositivos();
+
+  // Ejecutar cada segundo
+  const interval = setInterval(fetchDispositivos, 1000);
+
+  // Limpiar intervalo al desmontar o cuando cambie el email
+  return () => clearInterval(interval);
+
+}, [user?.email]);
+
+
+  // Obtener historial desde MySQL
+ // Obtener historial de compras desde MySQL
+useEffect(() => {
+  if (!user?.email) return;
+  fetch(`http://localhost:3001/historial_compras/${user.email}`)
+    .then(res => res.json())
+    .then(data => setHistorialCompras(data))
+    .catch(() => toast.error("Error al cargar historial de compras"));
+}, [user?.email]);
+
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -122,49 +185,63 @@ const MyProfile = ({ open, onClose, user, userName, userLastName }) => {
 
   const handleEdit = () => {
     setEditing(true);
-    setShowEditModal(true); // Abre el modal de edición
+    setShowEditModal(true);
   };
 
-  const handleSave = async () => {
-    try {
-      const userRef = doc(db, 'CLIENTES', user?.email);
-      const userSnap = await getDoc(userRef);
-      let updateData = {
-        name: form.nombre,
+ const handleSave = async () => {
+  try {
+    const res = await fetch(`http://localhost:3001/clientes/${user.email}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        name: form.name,
         lastName: form.apellido,
-        email: form.email,
         telefono: form.telefono,
         direccion: form.direccion
-      };
-      // Si no existe el campo timestamp, agrégalo como serverTimestamp
-      if (!userSnap.exists() || !userSnap.data().timestamp) {
-        updateData.timestamp = serverTimestamp();
-      }
-      await updateDoc(userRef, updateData);
-      toast.success('Actualización de datos correcta');
+      })
+    });
+    const result = await res.json();
+    if (result.success) {
+      toast.success("Actualización de datos correcta");
       setEditing(false);
-      setShowEditModal(false); // Cierra el modal de edición
-    } catch (err) {
-      toast.error('Error al actualizar los datos');
+      setShowEditModal(false);
+    } else {
+      toast.error("Error al actualizar");
     }
-  };
+  } catch (err) {
+    toast.error("Error de red al actualizar");
+  }
+};
 
-  // Función para formatear la fecha como "28 de Junio del 2025"
+  const handleDeleteDispositivo = async () => {
+  if (!user?.email || !dispositivoAEliminar) return;
+  try {
+    const res = await fetch(`http://localhost:3001/dispositivos/${dispositivoAEliminar.id}`, {
+      method: 'DELETE'
+    });
+    const result = await res.json();
+    if (result.success) {
+      toast.success('Dispositivo eliminado correctamente');
+      setDispositivos(dispositivos.filter(d => d.id !== dispositivoAEliminar.id));
+    } else {
+      toast.error('Error al eliminar el dispositivo');
+    }
+  } catch (err) {
+    toast.error('Error de red al eliminar');
+  } finally {
+    setConfirmationOpen(false);
+    setDispositivoAEliminar(null);
+  }
+};
+
+
   function formatFechaCreacion(ts) {
     if (!ts) return 'N/A';
-    let dateObj = ts.toDate ? ts.toDate() : ts;
-    if (!(dateObj instanceof Date)) dateObj = new Date(dateObj);
-    const meses = [
-      'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
-      'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
-    ];
-    const dia = dateObj.getDate();
-    const mes = meses[dateObj.getMonth()];
-    const anio = dateObj.getFullYear();
-    return `${dia} de ${mes} del ${anio}`;
+    let dateObj = ts instanceof Date ? ts : new Date(ts);
+    const meses = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+    return `${dateObj.getDate()} de ${meses[dateObj.getMonth()]} del ${dateObj.getFullYear()}`;
   }
 
-  // Cierra el menú contextual al hacer click fuera
   useEffect(() => {
     if (menuOpen === null) return;
     const handleClick = (e) => {
@@ -174,54 +251,26 @@ const MyProfile = ({ open, onClose, user, userName, userLastName }) => {
     return () => document.removeEventListener('mousedown', handleClick);
   }, [menuOpen]);
 
-  // Función para borrar el dispositivo
-  const handleDeleteDispositivo = async () => {
-    if (!user?.email || !dispositivoAEliminar) return;
-    try {
-      const dispositivosRef = doc(db, 'DISPOSITIVOS', user.email);
-      const { id } = dispositivoAEliminar;
-      await updateDocFirestore(dispositivosRef, {
-        [id]: deleteField()
-      });
-      toast.success('Dispositivo eliminado correctamente');
-    } catch (err) {
-      toast.error('Error al eliminar el dispositivo');
-    } finally {
-      setConfirmationOpen(false);
-      setDispositivoAEliminar(null);
-    }
-  };
-
-  // Obtener dinámicamente los estados presentes en los carritos
   const estadosUnicos = Array.from(
     new Set(carritos.map(c => (c.status || c.estado || '').toUpperCase()).filter(Boolean))
   );
   const categorias = ['Todas', ...estadosUnicos];
 
-  // Helper: obtener el último status de mantenimiento para un dispositivo desde el historial
   const getEstadoDispositivoDesdeHistorial = (dispId) => {
-    // Filtra solo pedidos de tipo SERVICIO para este dispositivo
     const servicios = carritos
-      .filter(c => c.type === 'SERVICIO' && c.dispositivo && c.dispositivo.id === dispId)
-      // Ordena por fecha de creación descendente
-      .sort((a, b) => {
-        const aDate = a.createdAt?.toDate ? a.createdAt.toDate() : new Date(a.createdAt);
-        const bDate = b.createdAt?.toDate ? b.createdAt.toDate() : new Date(b.createdAt);
-        return bDate - aDate;
-      });
-    // Devuelve el status del más reciente, o null si no hay
+      .filter(c => c.type === 'SERVICIO' && c.dispositivo_id === dispId)
+      .sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
     return servicios.length > 0 ? (servicios[0].status || servicios[0].estado || null) : null;
   };
 
   if (!open || !user) return null;
 
-  // Handler para cerrar el modal principal al hacer click en el overlay
   const handleOverlayClick = (e) => {
     if (e.target.classList.contains('myprofile-modal-overlay')) {
       onClose();
     }
   };
-
+  
   return (
     <div className="myprofile-modal-overlay" onClick={handleOverlayClick}>
       <div className="myprofile-modal" onClick={e => e.stopPropagation()}>
@@ -240,7 +289,7 @@ const MyProfile = ({ open, onClose, user, userName, userLastName }) => {
             {/* Perfil */}
             <div className="myprofile-container">
               <h2>Mi Perfil</h2>
-              <div><strong>Nombre:</strong> {form.nombre} {form.apellido}</div>
+              <div><strong>Nombre:</strong> {form.name} {form.apellido}</div>
               <div><strong>Email:</strong> {form.email}</div>
               <div><strong>Teléfono:</strong> {form.telefono}</div>
               <div><strong>Dirección:</strong> {form.direccion}</div>
@@ -450,35 +499,34 @@ const MyProfile = ({ open, onClose, user, userName, userLastName }) => {
                   }}
                 >
                   {carritos
-                    .filter(carrito => {
-                      if (estadoFiltro === 'Todas') return true;
-                      const estado = (carrito.status || carrito.estado || '').toUpperCase();
-                      return estado === estadoFiltro;
-                    })
-                    .map((carrito, idx) => {
-                      // Color según tipo
-                      const isServicio = carrito.type === 'SERVICIO';
-                      const isCompra = carrito.type === 'PRODUCTOS';
-                      const cardBg = isServicio
-                        ? 'linear-gradient(90deg,#e0f2fe 60%,#bae6fd 100%)'
-                        : 'linear-gradient(90deg,#f3f4f6 60%,#e5e7eb 100%)';
-                      const borderColor = isServicio
-                        ? '#38bdf8'
-                        : '#d1d5db';
-                      return (
-                        <div
-                          key={carrito.id || idx}
-                          style={{
-                            border: `2px solid ${borderColor}`,
-                            borderRadius: '10px',
-                            padding: '1em',
-                            background: cardBg,
-                            boxShadow: '0 1px 4px rgba(0,0,0,0.04)',
-                            cursor: 'pointer',
-                            transition: 'box-shadow 0.2s',
-                            position: 'relative'
-                          }}
-                          onClick={() => setCarritoExpandido(carritoExpandido === carrito.id ? null : carrito.id)}
+  .filter(carrito => {
+    if (estadoFiltro === 'Todas') return true;
+    const estado = (carrito.status || carrito.estado || '').toUpperCase();
+    return estado === estadoFiltro;
+  })
+  .map((carrito, idx) => {
+    // Color según tipo
+    const isServicio = carrito.type === 'SERVICIO';
+    const isCompra = carrito.type === 'PRODUCTOS';
+    const cardBg = isServicio
+      ? 'linear-gradient(90deg,#e0f2fe 60%,#bae6fd 100%)'
+      : 'linear-gradient(90deg,#f3f4f6 60%,#e5e7eb 100%)';
+    const borderColor = isServicio
+      ? '#38bdf8'
+      : '#d1d5db';
+    return (
+      <div key={`${carrito.type}-${carrito.id || idx}`}
+        style={{
+          border: `2px solid ${borderColor}`,
+          borderRadius: '10px',
+          padding: '1em',
+          background: cardBg,
+          boxShadow: '0 1px 4px rgba(0,0,0,0.04)',
+          cursor: 'pointer',
+          transition: 'box-shadow 0.2s',
+          position: 'relative'
+        }}
+        onClick={() => setCarritoExpandido(carritoExpandido === carrito.id ? null : carrito.id)}
                         >
                           <div style={{
                             fontWeight: 600,
@@ -534,6 +582,12 @@ const MyProfile = ({ open, onClose, user, userName, userLastName }) => {
                                     <strong>Dispositivo:</strong>{" "}
                                     {carrito.dispositivo?.marca} {carrito.dispositivo?.modelo} {carrito.dispositivo?.serie}
                                   </div>
+                                  {/* Mostrar nombre del técnico si existe */}
+                                  {carrito.tecnico_nombre && (
+                                    <div>
+                                      <strong>Encargado:</strong> {carrito.tecnico_nombre}
+                                    </div>
+                                  )}
                                   <div>
                                     <strong>Problema:</strong> {carrito.problema}
                                   </div>
@@ -608,7 +662,7 @@ const MyProfile = ({ open, onClose, user, userName, userLastName }) => {
             <div className="myprofile-left-col">
               <div className="myprofile-container">
                 <h2>Mi Perfil</h2>
-                <div><strong>Nombre:</strong> {form.nombre} {form.apellido}</div>
+                <div><strong>name:</strong> {form.name} {form.lastName}</div>
                 <div><strong>Email:</strong> {form.email}</div>
                 <div><strong>Teléfono:</strong> {form.telefono}</div>
                 <div><strong>Dirección:</strong> {form.direccion}</div>
@@ -753,6 +807,12 @@ const MyProfile = ({ open, onClose, user, userName, userLastName }) => {
                                       <strong>Dispositivo:</strong>{" "}
                                       {carrito.dispositivo?.marca} {carrito.dispositivo?.modelo} {carrito.dispositivo?.serie}
                                     </div>
+                                    {/* Mostrar nombre del técnico si existe */}
+                                    {carrito.tecnico_nombre && (
+                                      <div>
+                                        <strong>Encargado:</strong> {carrito.tecnico_nombre}
+                                      </div>
+                                    )}
                                     <div>
                                       <strong>Problema:</strong> {carrito.problema}
                                     </div>
@@ -1050,11 +1110,11 @@ const MyProfile = ({ open, onClose, user, userName, userLastName }) => {
             >
               <div>
                 <label>Nombre:</label>
-                <input name="nombre" value={form.nombre} onChange={handleChange} autoFocus />
+                <input name="name" value={form.name} onChange={handleChange} autoFocus />
               </div>
               <div>
                 <label>Apellido:</label>
-                <input name="apellido" value={form.apellido} onChange={handleChange} />
+                <input name="apellido" value={form.lastName} onChange={handleChange} />
               </div>
               <div>
                 <label>Email:</label>

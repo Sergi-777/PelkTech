@@ -27,8 +27,8 @@
   left: 0;
   top: 0;
   bottom: 0;
-  z-index: 20;
-  box-shadow: 2px 0 8px rgba(0,0,0,0.04);
+  z-index: 1200;
+  box-shadow: 2px 0 10px rgba(0,0,0,0.05);
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -36,6 +36,7 @@
 }
 .homepage-technical-sidebar.expanded {
   width: 230px;
+  box-shadow: 2px 0 16px rgba(0,0,0,0.10);
 }
 
 /* Oculta el texto del sidebar cuando NO está expandido */
@@ -285,6 +286,13 @@
   padding: 2em 1.5em 1.5em 1.5em;
   margin-bottom: 2em;
 }
+.homepage-technical-profile.collapsed {
+  min-height: 0 !important;
+  overflow: hidden !important;
+  padding: 1.2em 1em !important;
+  cursor: pointer;
+  transition: all 0.2s;
+}
 .homepage-technical-edit-profile {
   background: var(--color-primary, #2563eb);
   color: #fff;
@@ -366,6 +374,84 @@
 }
 .myprofile-action-btn:hover {
   background: var(--color-primary-dark, #1e40af);
+}
+
+/* Modal editar perfil overlay z-index */
+.editar-perfil-overlay {
+  z-index: 2000 !important;
+}
+
+/* Modal editar perfil estilos */
+.myprofile-edit-modal {
+  max-width: 420px;
+  margin: auto;
+  height: auto;
+  min-height: unset;
+  border-radius: 18px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+  padding: 0 1.5rem 1.5rem 1.5rem;
+}
+
+/* Modal header editar perfil */
+.myprofile-modal-header-edit {
+  border-radius: 18px 18px 0 0;
+  padding-bottom: 0;
+}
+.myprofile-title-edit {
+  font-size: 1.25rem;
+}
+
+/* Input readonly para email y rol */
+.input-readonly {
+  background: #f3f3f3 !important;
+  color: #888 !important;
+  cursor: not-allowed !important;
+}
+
+/* Acciones del formulario editar perfil */
+.myprofile-edit-form-actions {
+  display: flex;
+  gap: 0.7rem;
+  margin-top: 0.7rem;
+  justify-content: flex-end;
+}
+
+/* Botón guardar */
+.myprofile-action-btn-save {
+  min-width: 110px;
+  font-weight: 600;
+  font-size: 1rem;
+  border-radius: 8px;
+}
+
+/* Botón cancelar */
+.myprofile-action-btn-cancel {
+  background: #f3f3f3 !important;
+  color: #2563eb !important;
+  border: 1px solid #e5e7eb !important;
+  min-width: 110px;
+  font-weight: 500;
+  font-size: 1rem;
+  border-radius: 8px;
+}
+
+/* Sidebar selected item */
+.sidebar-selected,
+.homepage-technical-nav li.sidebar-selected {
+  background: var(--color-primary-dark, #1e40af) !important;
+  border-radius: 0 1.5em 1.5em 0;
+  color: #fff;
+}
+
+/* Tickets section placeholder */
+.homepage-technical-tickets-placeholder {
+  color: #888;
+  font-size: 1.1em;
+  padding: 1.5em 0;
+  text-align: center;
 }
 
 /* Responsive */

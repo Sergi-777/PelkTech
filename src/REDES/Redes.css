@@ -1,0 +1,77 @@
+/* Estructura y fondo */
+.redes-section {
+  background: #fff;
+  border-radius: 1.2em;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+  padding: 2em 1.5em 1.5em 1.5em;
+  margin-bottom: 2em;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Título */
+.redes-section h2 {
+  margin-bottom: 1em;
+  color: #2563eb;
+  font-size: 1.3em;
+  font-weight: bold;
+}
+
+/* Inputs y labels */
+.redes-input {
+  width: 100%;
+  padding: 0.5em 0.7em;
+  border-radius: 0.7em;
+  border: 1px solid #cbd5e1;
+  margin-top: 0.2em;
+  margin-bottom: 0.7em;
+  font-size: 1em;
+  background: #f8fafc;
+  transition: border 0.18s;
+  box-sizing: border-box;
+}
+.redes-input:focus {
+  border: 1.5px solid #2563eb;
+  outline: none;
+}
+.redes-input[disabled] {
+  background: #e5e7eb;
+  color: #64748b;
+  cursor: not-allowed;
+}
+
+/* Botones */
+.redes-btn-guardar {
+  background: #2563eb;
+  color: #fff;
+  border: none;
+  border-radius: 1.2em;
+  padding: 0.5em 1.5em;
+  font-size: 1em;
+  cursor: pointer;
+  transition: background 0.18s;
+  font-weight: 500;
+}
+.redes-btn-guardar:disabled {
+  background: #a5b4fc;
+  cursor: not-allowed;
+}
+.redes-btn-guardar:hover:not(:disabled) {
+  background: #1e40af;
+}
+
+/* Loading */
+.redes-loading {
+  color: #64748b;
+  font-style: italic;
+  margin: 1.5em 0;
+  text-align: center;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .redes-section {
+    padding: 1.2em 0.7em 1em 0.7em;
+    max-width: 98vw;
+  }
+}

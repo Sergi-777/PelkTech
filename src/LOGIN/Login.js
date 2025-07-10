@@ -1,54 +1,52 @@
 import React, { useState } from "react";
 import "./login.css";
-// Agrega imports de Firebase
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
-import { getFirestore, doc, getDoc } from "firebase/firestore";
 
 export default function Login({ open = true, onLogin, onShowRegister, onClose }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [showPassword, setShowPassword] = useState(false); // Nuevo estado
-  const [errorMsg, setErrorMsg] = useState(""); // Nuevo estado para errores
+  const [showPassword, setShowPassword] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("");
 
   if (!open) return null;
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    setErrorMsg("");
-    try {
-      const auth = getAuth();
-      const userCredential = await signInWithEmailAndPassword(auth, email, password);
-      const userEmail = userCredential.user.email;
-      // Busca el rol en EMPLEADOS
-      const db = getFirestore();
-      const empleadoDoc = await getDoc(doc(db, "EMPLEADOS", userEmail));
-      let rol = "USER";
-      if (empleadoDoc.exists() && empleadoDoc.data().rol === "TECNICO") {
-        rol = "TECNICO";
-      }
-      // Solo pasa email y rol, no guardes la contraseña ni el objeto completo
-      if (onLogin) onLogin({ email: userEmail, rol });
-      // Limpia los campos de email y password después de iniciar sesión
-      setEmail("");
-      setPassword("");
-    } catch (err) {
-      setErrorMsg("Correo o contraseña incorrectos.");
+  e.preventDefault();
+  setErrorMsg("");
+
+  try {
+    const res = await fetch("http://localhost:3001/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password }),
+    });
+
+    if (!res.ok) {
+      throw new Error("Correo o contraseña incorrectos.");
     }
-  };
+
+    const data = await res.json();
+
+    // Guardar usuario en localStorage
+    localStorage.setItem("user", JSON.stringify(data));
+
+    if (onLogin) onLogin(data);
+
+    // ✅ Recargar para activar redirección por rol
+    window.location.reload();
+
+    setEmail("");
+    setPassword("");
+  } catch (err) {
+    setErrorMsg(err.message);
+  }
+};
+
 
   return (
-    <div
-      className="login-overlay"
-      onClick={onClose}
-      style={{ cursor: "pointer" }}
-    >
-      <div
-        className="login-modal"
-        onClick={(e) => e.stopPropagation()}
-      >
+    <div className="login-overlay" onClick={onClose} style={{ cursor: "pointer" }}>
+      <div className="login-modal" onClick={(e) => e.stopPropagation()}>
         <h2>Hola, veo que no haz iniciado sesión</h2>
         <form onSubmit={handleSubmit} className="login-form">
-          {/* Mensaje de error */}
           {errorMsg && (
             <div style={{ color: "crimson", marginBottom: 8, fontWeight: "bold" }}>
               {errorMsg}
@@ -92,10 +90,7 @@ export default function Login({ open = true, onLogin, onShowRegister, onClose })
           <button className="login-btn" type="submit">
             Iniciar sesión
           </button>
-          <div
-            className="login-register-link"
-            style={{ marginTop: "1rem", textAlign: "center" }}
-          >
+          <div className="login-register-link" style={{ marginTop: "1rem", textAlign: "center" }}>
             <span>¿No tienes cuenta? </span>
             <a
               href="#"

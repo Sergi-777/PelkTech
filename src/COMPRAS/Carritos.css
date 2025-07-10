@@ -1,0 +1,242 @@
+.carritos-section {
+  max-width: 960px;
+  margin: auto;
+  padding: 2rem;
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #f8fafc;
+  border-radius: 20px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.05);
+  animation: fadeIn 0.4s ease-in-out;
+}
+
+.carritos-section h2 {
+  font-size: 2rem;
+  color: #1e3a8a;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.carritos-filter-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  justify-content: center;
+  margin-bottom: 2rem;
+}
+
+.filter-btn {
+  background-color: #e2e8f0;
+  color: #1e293b;
+  padding: 0.5rem 1.2rem;
+  border-radius: 999px;
+  border: none;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+.filter-btn:hover {
+  background-color: #cbd5e1;
+}
+
+.filter-btn.active {
+  background-color: #3b82f6;
+  color: #fff;
+}
+
+.carrito-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.carrito-item {
+  background-color: white;
+  border-radius: 16px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+  margin-bottom: 1.5rem;
+  border: 1px solid #e2e8f0;
+  overflow: hidden;
+  transition: box-shadow 0.2s;
+}
+
+.carrito-item:hover {
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+}
+
+.carrito-header {
+  padding: 1rem 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  font-family: monospace;
+}
+
+.status-pendiente {
+  background-color: #fef9c3;
+}
+
+.status-completado {
+  background-color: #d1fae5;
+}
+
+.status-cancelado {
+  background-color: #fee2e2;
+}
+
+.status-pendiente:hover {
+  background-color: #fef08a;
+}
+
+.status-completado:hover {
+  background-color: #86efac;
+}
+
+.status-cancelado:hover {
+  background-color: #fecaca;
+}
+
+.carrito-status {
+  background-color: #e0e7ff;
+  color: #3730a3;
+  font-weight: 600;
+  padding: 0.25rem 0.7rem;
+  border-radius: 8px;
+  font-size: 0.85rem;
+}
+
+.carrito-body {
+  padding: 1rem 2rem;
+  background-color: #ffffff;
+  animation: fadeIn 0.25s ease-in-out;
+}
+
+.carrito-body label {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 1rem;
+  margin-bottom: 1rem;
+}
+
+.carrito-body select {
+  padding: 0.4rem 1rem;
+  border-radius: 8px;
+  border: 1px solid #cbd5e1;
+  background: #f1f5f9;
+  color: #1e293b;
+  font-size: 1rem;
+  transition: border 0.2s;
+}
+
+.carrito-body select:focus {
+  border-color: #3b82f6;
+  background: #e0f2fe;
+  outline: none;
+}
+
+.carrito-body p {
+  margin: 0.4rem 0;
+  color: #334155;
+  font-size: 0.95rem;
+}
+
+.carrito-body ul {
+  padding-left: 1rem;
+  margin: 0.5rem 0;
+}
+
+.carrito-body li {
+  font-size: 0.92rem;
+  color: #475569;
+  margin-bottom: 0.3rem;
+}
+
+.no-carritos {
+  text-align: center;
+  color: #64748b;
+  font-style: italic;
+  font-size: 1.1rem;
+}
+
+.carrito-cliente {
+  margin-bottom: 1rem;
+  font-size: 1rem;
+  color: #222;
+}
+
+.carrito-btn-whatsapp {
+  margin-top: 0.5rem;
+  background: #25d366;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 0.4em 1.2em;
+  font-weight: 600;
+  font-size: 1em;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.carrito-btn-whatsapp:hover {
+  background: #128c7e;
+}
+
+.carrito-productos {
+  margin-bottom: 1rem;
+}
+.carrito-productos ul {
+  margin: 0;
+  padding-left: 1.2em;
+}
+.carrito-productos li {
+  display: flex;
+  align-items: center;
+  margin-bottom: 6px;
+  font-size: 0.97em;
+  color: #555;
+}
+
+.carrito-total-fecha {
+  margin-bottom: 1rem;
+  font-size: 1rem;
+  color: #333;
+}
+
+.carrito-estado-select {
+  margin-bottom: 0.5rem;
+}
+.carrito-estado-select label {
+  font-size: 1rem;
+  font-weight: 500;
+}
+.carrito-estado-select select {
+  padding: 0.4em 1em;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 1em;
+  margin-left: 8px;
+  background: #f1f5f9;
+  color: #1e293b;
+  transition: border 0.2s;
+}
+.carrito-estado-select select:focus {
+  border-color: #3b82f6;
+  background: #e0f2fe;
+  outline: none;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scaleY(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: scaleY(1);
+  }
+}

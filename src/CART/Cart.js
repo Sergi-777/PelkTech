@@ -1,83 +1,70 @@
 import React, { useEffect, useState } from 'react';
 import './Cart.css';
-import { getFirestore, doc, onSnapshot, setDoc, getDoc } from 'firebase/firestore';
 import { FaShoppingBag } from 'react-icons/fa';
 
 const Cart = ({ open, onClose, user }) => {
   const [cartItems, setCartItems] = useState([]);
-  const [successMsg, setSuccessMsg] = useState(""); // Nuevo estado para mensaje de éxito
+  const [successMsg, setSuccessMsg] = useState("");
 
+  // Cargar carrito desde backend MySQL cada 2 segundos
   useEffect(() => {
     if (!open || !user?.email) {
       setCartItems([]);
-      setSuccessMsg(""); // Limpiar mensaje al cerrar
+      setSuccessMsg("");
       return;
     }
-    const db = getFirestore();
-    const cartDocRef = doc(db, "CARRITO", user.email);
-    const unsubscribe = onSnapshot(cartDocRef, (docSnap) => {
-      if (docSnap.exists()) {
-        const data = docSnap.data();
-        // Convierte el objeto de productos a un array
-        setCartItems(
-          Object.values(data)
-            .filter(item => !!item)
-            .map(item => ({
-              ...item,
-              cantidad: item.cantidad || 1,
-              price: item.price || 0
-            }))
-        );
-      } else {
-        setCartItems([]);
+
+    const fetchCartItems = async () => {
+      try {
+        const res = await fetch(`http://localhost:3001/carrito/productos?email=${user.email}`);
+        const data = await res.json();
+        setCartItems(data || []);
+      } catch (err) {
+        console.error("Error al obtener carrito:", err);
       }
-    });
-    return () => unsubscribe();
-  }, [open, user]);
-
-  const total = cartItems.reduce((acc, item) => acc + (item.price * item.cantidad), 0);
-
-  // Nuevo: función para mover el carrito a HISTORIAL (un documento por email, cada compra es un campo tipo mapa)
-  const handleBuy = async () => {
-    if (!user?.email || cartItems.length === 0) return;
-    const db = getFirestore();
-    const historialDocRef = doc(db, "HISTORIAL", user.email);
-    const cartDocRef = doc(db, "CARRITO", user.email);
-
-    // Generar un id único para la compra (timestamp)
-    const compraId = Date.now().toString();
-
-    // Estructura de la compra
-    const compra = {
-      items: cartItems,
-      total,
-      status: 'PENDIENTE PAGO',
-      type: 'PRODUCTOS',
-      createdAt: new Date(),
-      email: user.email // Añadido el campo email
     };
 
-    // Obtener historial actual y agregar la nueva compra como campo mapa
-    const historialSnap = await getDoc(historialDocRef);
-    let historialData = {};
-    if (historialSnap.exists()) {
-      historialData = historialSnap.data();
+    fetchCartItems();
+    const intervalId = setInterval(fetchCartItems, 2000); // Actualiza cada 2 segundos
+    return () => clearInterval(intervalId);
+  }, [open, user]);
+
+  const total = cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0);
+
+  // Simular compra: limpiar el carrito desde el backend
+  const handleBuy = async () => {
+  if (!user?.email || cartItems.length === 0) return;
+
+  try {
+    const res = await fetch(`http://localhost:3001/carrito/comprar`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ 
+        email: user.email,
+        encargado: "SIN ASIGNAR"  // o un nombre real si lo tienes en contexto
+      }),
+    });
+
+    const data = await res.json();
+    if (data.success) {
+      setSuccessMsg("Carrito pagado con éxito, espera confirmación");
+      setCartItems([]);
+      setTimeout(() => setSuccessMsg(""), 3500);
+    } else {
+      console.error("Fallo en la compra:", data.message);
     }
-    historialData[compraId] = compra;
+  } catch (err) {
+    console.error("Error al pagar:", err);
+  }
+};
 
-    await setDoc(historialDocRef, historialData);
-    await setDoc(cartDocRef, {});
 
-    setSuccessMsg("Carrito pagado con éxito, espera confirmación");
-    setTimeout(() => setSuccessMsg(""), 3500);
-  };
-
-  // Handler para cerrar el modal al hacer click en el overlay
   const handleOverlayClick = (e) => {
     if (e.target.classList.contains('cart-modal-overlay')) {
       onClose();
     }
   };
+
 
   return (
     <div className={`cart-modal-overlay${open ? ' open' : ''}`} onClick={handleOverlayClick}>
@@ -121,7 +108,8 @@ const Cart = ({ open, onClose, user }) => {
                 />
                 <div className="cart-modal-item-info">
                   <div className="cart-modal-item-name">{item.name}</div>
-                  <div className="cart-modal-item-qty">Cantidad: {item.cantidad}</div>
+                  <div className="cart-modal-item-qty">Cantidad: {item.quantity}</div>
+
                 </div>
                 <div className="cart-modal-item-price">
                   ${item.price?.toLocaleString?.() ?? item.price}

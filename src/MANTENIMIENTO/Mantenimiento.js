@@ -14,55 +14,43 @@ const Mantenimiento = ({ open, onClose, dispositivo, user, pedido }) => {
   const estadoDispositivo = pedido?.dispositivo?.estado ?? dispositivo?.estado ?? '';
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!user?.email || !dispositivo || !problema.trim() || !como.trim()) return;
-    const db = getFirestore();
-    const historialDocRef = doc(db, "HISTORIAL", user.email);
+  e.preventDefault();
+  if (!user?.email || !dispositivo || !problema.trim() || !como.trim()) return;
 
-    // Generar un id único para la solicitud (timestamp)
-    const servicioId = Date.now().toString();
-
-    // No incluir el campo estado en el objeto dispositivo
-    const dispositivoData = {
-      id: dispositivo.id,
-      marca: dispositivo.marca,
-      modelo: dispositivo.modelo,
-      serie: dispositivo.serie
-      // estado: NO SE INCLUYE
-    };
-
-    // Estructura del pedido de servicio
-    const pedidoObj = {
-      dispositivo: dispositivoData,
-      problema,
-      como,
-      descripcion: `${problema}\n${como}`,
-      status: 'PENDIENTE',
-      type: 'SERVICIO',
-      createdAt: new Date(),
-      email: user.email,
-      fechadelacita: fechaMantenimiento // <-- Guarda la fecha de la cita
-    };
-
-    // Obtener historial actual y agregar el nuevo pedido como campo mapa
-    const historialSnap = await getDoc(historialDocRef);
-    let historialData = {};
-    if (historialSnap.exists()) {
-      historialData = historialSnap.data();
-    }
-    historialData[servicioId] = pedidoObj;
-
-    await setDoc(historialDocRef, historialData);
-
-    setSuccessMsg('Pedido de mantenimiento enviado con éxito');
-    setProblema('');
-    setComo('');
-    setFechaMantenimiento('');
-    setTimeout(() => {
-      setSuccessMsg('');
-      onClose();
-    }, 2000);
+  const mantenimiento = {
+    cliente_email: user.email,
+    dispositivo_id: dispositivo.id,
+    status: 'PENDIENTE',
+    tipo: problema.length > como.length ? 'HARDWARE' : 'SOFTWARE', // o una lógica personalizada
+    descripcion: `${problema}\n${como}`
   };
+
+  try {
+    const res = await fetch('http://localhost:3001/mantenimiento', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(mantenimiento)
+    });
+
+    const result = await res.json();
+
+    if (result.success) {
+      setSuccessMsg('Pedido de mantenimiento enviado con éxito');
+      setProblema('');
+      setComo('');
+      setFechaMantenimiento('');
+      setTimeout(() => {
+        setSuccessMsg('');
+        onClose();
+      }, 2000);
+    } else {
+      alert('Error al registrar el mantenimiento');
+    }
+  } catch (err) {
+    alert('Error de red al registrar el mantenimiento');
+  }
+};
+
 
   return (
     <div className="mantenimiento-modal-overlay" onClick={e => {

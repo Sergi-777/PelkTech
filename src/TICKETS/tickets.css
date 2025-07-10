@@ -1,0 +1,222 @@
+.tickets-section {
+  max-width: 960px;
+  margin: auto;
+  padding: 2rem;
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #f9fafb;
+  border-radius: 16px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+}
+
+.tickets-section h2 {
+  font-size: 1.8rem;
+  color: #1f2937;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.tickets-filter-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  justify-content: center;
+  margin-bottom: 2rem;
+}
+
+.filter-btn {
+  background-color: #e5e7eb;
+  color: #111827;
+  padding: 0.4rem 1rem;
+  border-radius: 999px;
+  border: none;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.filter-btn:hover {
+  background-color: #d1d5db;
+}
+
+.filter-btn.active {
+  background-color: #2563eb;
+  color: white;
+}
+
+.ticket-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.ticket-item {
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+  margin-bottom: 1rem;
+  overflow: hidden;
+  border: 1px solid #e5e7eb;
+}
+
+.ticket-header {
+  padding: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  transition: background 0.2s;
+  background-color: unset; /* Elimina background-color aquí para que lo manejen las clases de estado */
+}
+
+.ticket-header:hover {
+  background-color: #e5e7eb;
+}
+
+.ticket-header strong {
+  color: #1d4ed8;
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  font-family: monospace;
+}
+
+/* Colores por estado */
+.ticket-header.status-diagnostico {
+  background-color: #fef9c3; /* amarillo claro */
+}
+.ticket-header.status-esperando {
+  background-color: #f1f5f9; /* gris claro */
+}
+.ticket-header.status-confirmacion {
+  background-color: #dbeafe; /* azul claro */
+}
+.ticket-header.status-reparacion {
+  background-color: #fce7f3; /* rosa claro */
+}
+.ticket-header.status-pruebas {
+  background-color: #d1fae5; /* verde claro */
+}
+.ticket-header.status-entregado {
+  background-color: #e0e7ff; /* violeta claro */
+}
+
+/* Opcional: hover mantiene el color base */
+.ticket-header.status-diagnostico:hover { background-color: #fef08a; }
+.ticket-header.status-esperando:hover { background-color: #e5e7eb; }
+.ticket-header.status-confirmacion:hover { background-color: #bae6fd; }
+.ticket-header.status-reparacion:hover { background-color: #fbcfe8; }
+.ticket-header.status-pruebas:hover { background-color: #6ee7b7; }
+.ticket-header.status-entregado:hover { background-color: #c7d2fe; }
+
+.ticket-status {
+  background-color: #e0e7ff;
+  color: #3730a3;
+  font-weight: 500;
+  padding: 0.2rem 0.6rem;
+  border-radius: 8px;
+  font-size: 0.85rem;
+}
+
+.ticket-body {
+  padding: 1rem 1.5rem;
+  background-color: #ffffff;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+/* Estilo para el contenedor del select */
+.ticket-body label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0; /* Quitar margen superior para el select */
+  font-size: 0.97rem;
+}
+
+/* Estilo para el select de cambio de estado */
+.ticket-body select {
+  padding: 0.35rem 1.2rem 0.35rem 0.7rem;
+  border-radius: 8px;
+  border: 1px solid #d1d5db;
+  background: #f3f4f6;
+  color: #1f2937;
+  font-size: 0.97rem;
+  outline: none;
+  transition: border 0.2s;
+  margin-left: 0.2rem;
+}
+
+.ticket-body select:focus {
+  border-color: #2563eb;
+  background: #e0e7ff;
+}
+
+.ticket-body select option {
+  background: #fff;
+  color: #1f2937;
+}
+
+.ticket-body p {
+  margin: 0.3rem 0;
+  color: #374151;
+  font-size: 0.95rem;
+}
+
+.no-tickets {
+  text-align: center;
+  color: #6b7280;
+  font-style: italic;
+}
+
+/* Animación */
+@keyframes fadeIn {
+  from { opacity: 0; transform: scaleY(0.95); }
+  to { opacity: 1; transform: scaleY(1); }
+}
+
+.ticket-extra-inputs {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+  margin: 1rem 0 0.5rem 0;
+}
+
+.ticket-extra-inputs label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.96rem;
+}
+
+.ticket-extra-inputs input[type="text"] {
+  padding: 0.32rem 0.8rem;
+  border-radius: 7px;
+  border: 1px solid #d1d5db;
+  background: #f9fafb;
+  color: #1f2937;
+  font-size: 0.97rem;
+  outline: none;
+  transition: border 0.2s;
+  min-width: 120px;
+}
+
+.ticket-extra-inputs input[type="text"]:focus {
+  border-color: #2563eb;
+  background: #e0e7ff;
+}
+
+.guardar-btn {
+  background-color: #2563eb;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 0.45rem 1.3rem;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.18s;
+  margin-top: 0.5rem;
+}
+
+.guardar-btn:hover {
+  background-color: #1d4ed8;
+}

@@ -1,284 +1,198 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { FaShoppingCart, FaFacebook, FaTwitter, FaInstagram, FaUser, FaSignOutAlt, FaWhatsapp, FaBars } from 'react-icons/fa';
-import './HomePage_User.css'; 
-// Importa Firestore
-import { getFirestore, collection, getDocs, doc, getDoc, setDoc, onSnapshot } from "firebase/firestore";
-import '../firebase'; // Asegúrate que inicializa Firebase
+import './HomePage_User.css';
 import LoginCart from '../LOGIN/Login';
-import RegisterModal from '../REGISTER/Register'; // Importa el modal de registro
-import MyProfile from '../MYPROFILE/MyProfile'; // Importa MyProfile
-import Cart from '../CART/Cart'; // Importa el modal del carrito
-import { getAuth, signOut } from "firebase/auth"; // Agrega import
+import RegisterModal from '../REGISTER/Register';
+import MyProfile from '../MYPROFILE/MyProfile';
+import Cart from '../CART/Cart';
 import ConfirmationMessage from '../RESOURCES/CONFIRMATIONDELETE/ConfirmationMessage';
 
-// Quita el estado local user y usa el prop
-const HomePage_User = ({ user }) => {
+const HomePage_User = () => {
+  const [user, setUser] = useState(() => {
+    const stored = localStorage.getItem('user');
+    return stored ? JSON.parse(stored) : null;
+  });
+
   const [productos, setProductos] = useState([]);
   const [categoriasUnicas, setCategoriasUnicas] = useState([]);
-  const [hoveredIndex, setHoveredIndex] = useState(null); // Nuevo estado para hover
   const [showLoginCart, setShowLoginCart] = useState(false);
-  const [showRegister, setShowRegister] = useState(false); // Nuevo estado para registro
-  const [userName, setUserName] = useState(""); // Estado para el nombre
-  const [userLastName, setUserLastName] = useState(""); // Nuevo estado para apellido
-  const [toastMsg, setToastMsg] = useState(""); // Nuevo: para mostrar toast
-  const [selectedCategory, setSelectedCategory] = useState(null); // Nuevo: categoría seleccionada
-  const [showProfile, setShowProfile] = useState(false); // Nuevo estado para mostrar perfil
-  const [searchTerm, setSearchTerm] = useState(""); // Nuevo: estado para el término de búsqueda
-  const [cartCount, setCartCount] = useState(0); // Nuevo: cantidad de productos en carrito
-  const [showCart, setShowCart] = useState(false); // Nuevo: estado para mostrar el modal del carrito
-  const [showLogoutConfirm, setShowLogoutConfirm] = useState(false); // Nuevo: para modal de confirmación
+  const [showRegister, setShowRegister] = useState(false);
+  const [userName, setUserName] = useState("");
+  const [userLastName, setUserLastName] = useState("");
+  const [toastMsg, setToastMsg] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [showProfile, setShowProfile] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [cartCount, setCartCount] = useState(0);
+  const [showCart, setShowCart] = useState(false);
+  const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [redes, setRedes] = useState(null);
-  const [isWhatsappFabVisible, setIsWhatsappFabVisible] = useState(true); // Nuevo: visibilidad del botón
-  const footerRef = useRef(null); // Nuevo: referencia al footer
-
-  // Detectar si es móvil (ancho <= 700px)
-  const [isMobile, setIsMobile] = useState(window.innerWidth <= 700);
-  useEffect(() => {
-    const handleResize = () => setIsMobile(window.innerWidth <= 700);
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
+  const [isWhatsappFabVisible, setIsWhatsappFabVisible] = useState(true);
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+  const [hoveredIndex, setHoveredIndex] = useState(null);
+  const footerRef = useRef(null);
 
   useEffect(() => {
     const fetchProductos = async () => {
-      const db = getFirestore();
-      const productosCol = collection(db, "PRODUCTOS");
-      const productosSnapshot = await getDocs(productosCol);
-      const productosList = productosSnapshot.docs.map(doc => doc.data());
-      setProductos(productosList);
-
-      // Extraer categorías únicas
-      const cats = [...new Set(productosList.map(item => item.category))];
-      setCategoriasUnicas(cats);
+      try {
+        const res = await fetch('http://localhost:3001/productos');
+        const data = await res.json();
+        setProductos(data);
+        const cats = [...new Set(data.map(item => item.category))];
+        setCategoriasUnicas(cats);
+      } catch (err) {
+        console.error('Error al obtener productos:', err);
+      }
     };
     fetchProductos();
+    const intervalId = setInterval(fetchProductos, 2000);
+    return () => clearInterval(intervalId);
   }, []);
 
   const handleAddToCart = async (producto) => {
-    if (!user) {
-      setShowLoginCart(true);
-      return;
-    }
-    // Nuevo: Agregar producto al carrito en Firestore
+    if (!user) return setShowLoginCart(true);
     try {
-      const db = getFirestore();
-      // El carrito es por usuario, documento con id = email
-      const cartDocRef = doc(db, "CARRITO", user.email);
-      // Cada producto es un campo en el documento, la clave es el id del producto
-      // Si ya existe, solo suma cantidad, si no, lo crea con cantidad 1
-      const cartSnap = await getDoc(cartDocRef);
-      let newCart = {};
-      if (cartSnap.exists()) {
-        const cartData = cartSnap.data();
-        const prev = cartData[producto.id];
-        newCart = {
-          ...cartData,
-          [producto.id]: {
-            ...producto,
-            cantidad: prev ? (prev.cantidad || 1) + 1 : 1
-          }
-        };
-      } else {
-        newCart = {
-          [producto.id]: {
-            ...producto,
-            cantidad: 1
-          }
-        };
-      }
-      await setDoc(cartDocRef, newCart);
-      setToastMsg("Añadido al carrito");
-      setTimeout(() => setToastMsg(""), 2000);
-    } catch (err) {
-      setToastMsg("Error al añadir al carrito");
-      setTimeout(() => setToastMsg(""), 2000);
+      const res = await fetch('http://localhost:3001/carrito/agregar', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: user.email, productoId: producto.id, cantidad: 1 })
+      });
+      const data = await res.json();
+      setToastMsg(data.success ? "Producto añadido al carrito" : "Error al añadir al carrito");
+    } catch {
+      setToastMsg("Error de red al añadir al carrito");
     }
+    setTimeout(() => setToastMsg(""), 2000);
   };
 
   const handleLogin = async (credentials) => {
+    setUser(credentials);
+    localStorage.setItem('user', JSON.stringify(credentials));
     setShowLoginCart(false);
 
-    // Obtener el nombre del usuario desde CLIENTES
-    const db = getFirestore();
-    const userDocRef = doc(db, "CLIENTES", credentials.email);
-    const userDocSnap = await getDoc(userDocRef);
-    if (userDocSnap.exists()) {
-      setUserName(userDocSnap.data().name || "");
-      setUserLastName(userDocSnap.data().lastName || "");
+    // Si el rol es USER (cliente), obtener el nombre desde el backend
+    if (credentials.rol === "USER") {
+      try {
+        const res = await fetch(`http://localhost:3001/clientes/${credentials.email}`);
+        if (res.ok) {
+          const cliente = await res.json();
+          setUserName(cliente.name || "");
+          setUserLastName(cliente.lastName || "");
+        } else {
+          setUserName("");
+          setUserLastName("");
+        }
+      } catch {
+        setUserName("");
+        setUserLastName("");
+      }
     } else {
+      // Si no es cliente, limpiar nombre
       setUserName("");
       setUserLastName("");
     }
   };
 
-  // Nuevo: cuando se solicita registro desde login
-  const handleShowRegister = () => {
-    setShowLoginCart(false);
-    setShowRegister(true);
-  };
-
-  // Nuevo: cuando se solicita login desde registro
-  const handleShowLogin = () => {
+  const handleRegister = (credentials) => {
+    setUser(credentials);
+    localStorage.setItem('user', JSON.stringify(credentials));
     setShowRegister(false);
-    setShowLoginCart(true);
-  };
-
-  // Nuevo: manejar registro exitoso
-  const handleRegister = async (credentials) => {
-    setShowRegister(false);
-
-    // Guardar nombre y apellido en la colección CLIENTES
-    const db = getFirestore();
-    const userDocRef = doc(db, "CLIENTES", credentials.email);
-    await setDoc(userDocRef, {
-      name: credentials.name,
-      lastName: credentials.lastName,
-      email: credentials.email
-    });
-
     setUserName(credentials.name || "");
     setUserLastName(credentials.lastName || "");
   };
 
-  // Nuevo: cerrar modales
-  const handleCloseLogin = () => setShowLoginCart(false);
-  const handleCloseRegister = () => setShowRegister(false);
-  const handleCloseProfile = () => setShowProfile(false);
-
-  // Si ya está autenticado y recarga, obtener el nombre
-  useEffect(() => {
-    if (user && user.email) {
-      const db = getFirestore();
-      const userDocRef = doc(db, "CLIENTES", user.email);
-      getDoc(userDocRef).then(userDocSnap => {
-        if (userDocSnap.exists()) {
-          setUserName(userDocSnap.data().name || "");
-          setUserLastName(userDocSnap.data().lastName || "");
-        } else {
-          setUserName("");
-          setUserLastName("");
-        }
-      });
-    }
-  }, [user]);
-
-  // Nuevo: manejar carga masiva de productos desde archivo JSON y subir a Firestore
-  const handleFileChange = async (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
-    const reader = new FileReader();
-    reader.onload = async (event) => {
-      try {
-        const json = JSON.parse(event.target.result);
-        if (Array.isArray(json)) {
-          setProductos(prev => [...prev, ...json]);
-          // Actualizar categorías únicas también
-          const cats = [...new Set([...productos, ...json].map(item => item.category))];
-          setCategoriasUnicas(cats);
-
-          // Subir productos a Firestore
-          const db = getFirestore();
-          const uploadPromises = json.map(prod =>
-            setDoc(doc(db, "PRODUCTOS", prod.id || Math.random().toString(36).slice(2)), prod)
-          );
-          await Promise.all(uploadPromises);
-
-          // Mostrar toast
-          setToastMsg("Productos subidos a la base de datos");
-          setTimeout(() => setToastMsg(""), 3000);
-        } else {
-          alert("El archivo JSON debe ser un arreglo de productos.");
-        }
-      } catch (err) {
-        alert("Archivo JSON inválido.");
-      }
-    };
-    reader.readAsText(file);
+  const handleLogout = () => {
+    localStorage.removeItem('user');
+    setUser(null);
+    window.location.reload();
   };
 
-  // Filtrar productos según la categoría seleccionada y el término de búsqueda
-  const productosFiltrados = productos.filter(p => {
-    // Filtrado por categoría
-    const categoryMatch = selectedCategory ? p.category === selectedCategory : true;
-    // Filtrado por búsqueda flexible
-    if (!searchTerm.trim()) return categoryMatch;
-    // Normaliza y busca coincidencia parcial en nombre, descripción o categoría
-    const normalize = s => (s || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-    const search = normalize(searchTerm);
-    return (
-      categoryMatch &&
-      (
-        normalize(p.name).includes(search) ||
-        normalize(p.description).includes(search) ||
-        normalize(p.category).includes(search)
-      )
-    );
-  });
-
-  // Escuchar en tiempo real los cambios en el carrito del usuario
-  useEffect(() => {
-    if (!user?.email) {
-      setCartCount(0);
-      return;
-    }
-    const db = getFirestore();
-    const cartDocRef = doc(db, "CARRITO", user.email);
-    const unsubscribe = onSnapshot(cartDocRef, (docSnap) => {
-      if (docSnap.exists()) {
-        const data = docSnap.data();
-        // Suma todas las cantidades de productos en el carrito
-        const total = Object.values(data).reduce((acc, prod) => acc + (prod.cantidad || 1), 0);
-        setCartCount(total);
-      } else {
-        setCartCount(0);
-      }
-    });
-    return () => unsubscribe();
-  }, [user]);
-
-  // Nuevo: función para cerrar sesión
-  const handleLogout = async () => {
-    try {
-      const auth = getAuth();
-      await signOut(auth);
-      setShowProfile(false);
-      setShowLogoutConfirm(false);
-      // Recargar la pantalla al cerrar sesión como usuario
-      window.location.reload();
-    } catch (e) {
-      setToastMsg("Error al cerrar sesión");
-      setTimeout(() => setToastMsg(""), 2000);
-    }
-  };
-
-  // Nuevo: cargar datos de REDES/REDESSOCIALES al montar
   useEffect(() => {
     const fetchRedes = async () => {
       try {
-        const db = getFirestore();
-        const docRef = doc(db, "REDES", "REDESSOCIALES");
-        const docSnap = await getDoc(docRef);
-        if (docSnap.exists()) {
-          setRedes(docSnap.data());
-        }
+        const res = await fetch('http://localhost:3001/redes');
+        const data = await res.json();
+        setRedes(data);
       } catch (e) {
-        setRedes(null);
+        console.error('Error al obtener redes:', e);
       }
     };
     fetchRedes();
   }, []);
 
-  // Nuevo: ocultar el botón de WhatsApp cuando el footer es visible
-  useEffect(() => {
-    if (!footerRef.current) return;
-    const observer = new window.IntersectionObserver(
-      ([entry]) => setIsWhatsappFabVisible(!entry.isIntersecting),
-      { threshold: 0.01 }
+  const productosFiltrados = productos.filter(p => {
+    const categoryMatch = selectedCategory ? p.category === selectedCategory : true;
+    const search = searchTerm.trim().toLowerCase();
+    return categoryMatch && (
+      p.name?.toLowerCase().includes(search) ||
+      p.description?.toLowerCase().includes(search) ||
+      p.category?.toLowerCase().includes(search)
     );
-    observer.observe(footerRef.current);
-    return () => observer.disconnect();
+  });
+
+  // Manejar cambios de tamaño de ventana para isMobile
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth <= 768);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
   }, []);
+
+  // Función para manejar carga de archivos (puede dejarse vacía o implementar lógica)
+  const handleFileChange = (e) => {
+    // Implementar lógica si es necesario
+    // Por ahora, solo limpiar el input
+    e.target.value = '';
+  };
+
+  // Funciones para abrir/cerrar modales de login/register
+  const handleShowRegister = () => setShowRegister(true);
+  const handleCloseLogin = () => setShowLoginCart(false);
+  const handleShowLogin = () => setShowLoginCart(true);
+  const handleCloseRegister = () => setShowRegister(false);
+// Obtener nombre y apellido del cliente si ya está autenticado (por persistencia localStorage)
+useEffect(() => {
+  const fetchClienteInfo = async () => {
+    if (user && user.rol === "USER") {
+      try {
+        const res = await fetch(`http://localhost:3001/clientes/${user.email}`);
+        if (res.ok) {
+          const cliente = await res.json();
+          setUserName(cliente.name || "");
+          setUserLastName(cliente.lastName || "");
+        } else {
+          setUserName("");
+          setUserLastName("");
+        }
+      } catch {
+        setUserName("");
+        setUserLastName("");
+      }
+    }
+  };
+  fetchClienteInfo();
+}, [user]);
+
+useEffect(() => {
+  if (!user || !user.email) return;
+
+  const fetchCartCount = async () => {
+    try {
+      const res = await fetch(`http://localhost:3001/carrito/cantidad?email=${user.email}`);
+      const data = await res.json();
+      setCartCount(data.cantidad || 0);
+    } catch (error) {
+      console.error("Error al obtener el total del carrito:", error);
+    }
+  };
+
+  fetchCartCount();
+  const interval = setInterval(fetchCartCount, 1000); // Actualiza cada 5 segundos
+
+  return () => clearInterval(interval);
+}, [user]);
+
+
 
   return (
     <div className="homepage-user-container">
@@ -419,12 +333,12 @@ const HomePage_User = ({ user }) => {
                 setIsMobileMenuOpen(false);
               }}
             >
-              <FaShoppingCart style={{ marginRight: 8 }} />
-              Carrito
-              {cartCount > 0 && (
-                <span className="homepage-user-cart-count" style={{ marginLeft: 8 }}>
-                  {cartCount}
-                </span>
+              <FaShoppingCart />
+Carrito
+{cartCount > 0 && (
+  <span className="homepage-user-cart-count">
+    {cartCount}
+  </span>
               )}
             </button>
           </div>
@@ -433,6 +347,18 @@ const HomePage_User = ({ user }) => {
 
       {/* Contenido principal */}
       <main className="homepage-user-main">
+        {/* Botón subir archivo (invisible) */}
+        <div style={{ display: 'none' }}>
+          <label htmlFor="upload-json">
+            Subir archivo
+            <input
+              id="upload-json"
+              type="file"
+              accept="application/json"
+              onChange={handleFileChange}
+            />
+          </label>
+        </div>
         {/* Categorías */}
         <div
           className="homepage-user-categories"
@@ -506,37 +432,39 @@ const HomePage_User = ({ user }) => {
         {/* ...aquí va el contenido principal... */}
       </main>
 
-      {/* Footer */}
       <footer className="homepage-user-footer" ref={footerRef}>
-        {/* Contacto */}
-        <div>
-          <div className="homepage-user-footer-title">Contáctanos</div>
-          {redes?.correo && <div>{redes.correo}</div>}
-          {redes?.whatsapp && <div>{redes.whatsapp}</div>}
-        </div>
-        {/* Derechos reservados */}
-        <div className="homepage-user-footer-rights">
-          © {new Date().getFullYear()} Pelktech. Todos los derechos reservados.
-        </div>
-        {/* Redes sociales */}
-        <div className="homepage-user-footer-socials">
-          {redes?.facebook && (
-            <a href={redes.facebook} target="_blank" rel="noopener noreferrer">
-              <FaFacebook />
-            </a>
-          )}
-          {redes?.twitter && (
-            <a href={redes.twitter} target="_blank" rel="noopener noreferrer">
-              <FaTwitter />
-            </a>
-          )}
-          {redes?.instagram && (
-            <a href={redes.instagram} target="_blank" rel="noopener noreferrer">
-              <FaInstagram />
-            </a>
-          )}
-        </div>
-      </footer>
+  {/* Contacto */}
+  <div className="homepage-user-footer-contact">
+    <div className="homepage-user-footer-title">Contáctanos</div>
+    {redes?.correo && <div><strong>Correo:</strong> {redes.correo}</div>}
+    {redes?.whatsapp && <div><strong>WhatsApp:</strong> {redes.whatsapp}</div>}
+  </div>
+
+  {/* Derechos reservados */}
+  <div className="homepage-user-footer-rights">
+    © {new Date().getFullYear()} Pelktech. Todos los derechos reservados.
+  </div>
+
+  {/* Redes sociales */}
+  <div className="homepage-user-footer-socials">
+    {redes?.facebook && (
+      <a href={redes.facebook} target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+        <FaFacebook />
+      </a>
+    )}
+    {redes?.twitter && (
+      <a href={redes.twitter} target="_blank" rel="noopener noreferrer" aria-label="Twitter">
+        <FaTwitter />
+      </a>
+    )}
+    {redes?.instagram && (
+      <a href={redes.instagram} target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+        <FaInstagram />
+      </a>
+    )}
+  </div>
+</footer>
+
       <>
         <LoginCart
           open={showLoginCart}

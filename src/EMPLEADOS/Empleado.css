@@ -1,0 +1,182 @@
+/* Lista de empleados */
+.empleado-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.2em;
+  margin-top: 1.2em;
+}
+.empleado-card {
+  background: #f1f5f9;
+  border-radius: 1em;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+  padding: 1.2em 1.3em;
+  min-width: 230px;
+  max-width: 270px;
+  flex: 1 1 230px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  border: 1px solid #e0e7ef;
+}
+.empleado-nombre {
+  font-size: 1.15em;
+  font-weight: 600;
+  color: var(--color-primary, #2563eb);
+  margin-bottom: 0.2em;
+}
+.empleado-email {
+  font-size: 0.98em;
+  color: #64748b;
+  margin-bottom: 0.5em;
+  word-break: break-all;
+}
+.empleado-rol,
+.empleado-tel,
+.empleado-fecha {
+  font-size: 0.97em;
+  margin-bottom: 0.3em;
+  color: #374151;
+}
+.empleado-btns {
+  margin-top: 0.7em;
+  display: flex;
+  gap: 0.7em;
+}
+.empleado-btn-editar,
+.empleado-btn-borrar {
+  background: #e0e7ff;
+  color: #1e293b;
+  border: none;
+  border-radius: 1.2em;
+  padding: 0.4em 1.1em;
+  font-size: 0.98em;
+  cursor: pointer;
+  transition: background 0.18s, color 0.18s;
+}
+.empleado-btn-editar:hover {
+  background: var(--color-primary, #2563eb);
+  color: #fff;
+}
+.empleado-btn-borrar:hover {
+  background: #ef4444;
+  color: #fff;
+}
+.empleado-btn-add {
+  background: var(--color-primary, #2563eb);
+  color: #fff;
+  border: none;
+  border-radius: 1.2em;
+  padding: 0.6em 1.5em;
+  font-size: 1.05em;
+  font-weight: 500;
+  margin-bottom: 1.2em;
+  cursor: pointer;
+  transition: background 0.18s;
+}
+.empleado-btn-add:hover {
+  background: var(--color-primary-dark, #1e40af);
+}
+
+/* Modal editar/agregar empleado */
+.editar-empleado-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.18);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.editar-empleado-modal {
+  background: #fff;
+  border-radius: 1.2em;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.13);
+  padding: 2em 2.2em 1.5em 2.2em;
+  min-width: 320px;
+  max-width: 95vw;
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+  position: relative;
+}
+.editar-empleado-modal-title {
+  font-size: 1.2em;
+  font-weight: 600;
+  color: var(--color-primary, #2563eb);
+  margin-bottom: 0.7em;
+}
+.editar-empleado-input,
+.editar-empleado-select {
+  width: 100%;
+  padding: 0.5em 0.7em;
+  border-radius: 0.7em;
+  border: 1px solid #cbd5e1;
+  margin-top: 0.2em;
+  margin-bottom: 0.7em;
+  font-size: 1em;
+  background: #f8fafc;
+  transition: border 0.18s;
+  box-sizing: border-box;
+}
+.editar-empleado-input:focus,
+.editar-empleado-select:focus {
+  border: 1.5px solid var(--color-primary, #2563eb);
+  outline: none;
+}
+.editar-empleado-input-readonly {
+  background: #e5e7eb;
+  color: #64748b;
+  cursor: not-allowed;
+}
+.editar-empleado-modal-btns {
+  display: flex;
+  gap: 1em;
+  margin-top: 0.5em;
+}
+.editar-empleado-btn-guardar {
+  background: var(--color-primary, #2563eb);
+  color: #fff;
+  border: none;
+  border-radius: 1.2em;
+  padding: 0.5em 1.5em;
+  font-size: 1em;
+  cursor: pointer;
+  transition: background 0.18s;
+}
+.editar-empleado-btn-guardar:disabled {
+  background: #a5b4fc;
+  cursor: not-allowed;
+}
+.editar-empleado-btn-guardar:hover:not(:disabled) {
+  background: var(--color-primary-dark, #1e40af);
+}
+.editar-empleado-btn-cancelar {
+  background: #e0e7ff;
+  color: #1e293b;
+  border: none;
+  border-radius: 1.2em;
+  padding: 0.5em 1.5em;
+  font-size: 1em;
+  cursor: pointer;
+  transition: background 0.18s;
+}
+.editar-empleado-btn-cancelar:hover {
+  background: #ef4444;
+  color: #fff;
+}
+
+/* Loading */
+.empleado-loading {
+  color: #64748b;
+  font-style: italic;
+  margin: 1.5em 0;
+  text-align: center;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .empleado-list {
+    flex-direction: column;
+    gap: 0.7em;
+  }
+}
