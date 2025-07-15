@@ -96,6 +96,7 @@ export default function Login({ open = true, onLogin, onShowRegister, onClose })
               href="#"
               onClick={(e) => {
                 e.preventDefault();
+                if (onClose) onClose(); // Cierra el Login antes de mostrar Register
                 if (onShowRegister) onShowRegister();
               }}
             >

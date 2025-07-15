@@ -431,7 +431,7 @@ app.post('/carrito/agregar', async (req, res) => {
 app.post("/clientes", (req, res) => {
   const { email, password, name, lastName } = req.body;
 
-  const query = "INSERT INTO clientes (email, password, nombre, apellido) VALUES (?, ?, ?, ?)";
+  const query = "INSERT INTO clientes (email, password, name, lastName) VALUES (?, ?, ?, ?)";
   db.query(query, [email, password, name, lastName], (err, result) => {
     if (err) return res.status(500).json({ error: "Error al registrar cliente" });
     res.json({ success: true });
@@ -638,7 +638,7 @@ app.put('/clientes/:email', (req, res) => {
   const { name, lastName, telefono, direccion } = req.body;
 
   db.query(
-    'UPDATE clientes SET nombre = ?, apellido = ?, telefono = ?, direccion = ? WHERE email = ?',
+    'UPDATE clientes SET name = ?, lastName = ?, telefono = ?, direccion = ? WHERE email = ?',
     [name, lastName, telefono, direccion, email],
     (err, result) => {
       if (err) {

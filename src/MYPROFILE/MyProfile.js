@@ -60,8 +60,8 @@ const MyProfile = ({ open, onClose, user, userName, userLastName }) => {
       .then(res => res.json())
       .then(data => {
         setForm({
-          nombre: data.name || '',
-          apellido: data.apellido || '',
+          name: data.name || '',
+          lastName: data.lastName || '',
           email: data.email || '',
           telefono: data.telefono || '',
           direccion: data.direccion || ''
@@ -289,7 +289,7 @@ useEffect(() => {
             {/* Perfil */}
             <div className="myprofile-container">
               <h2>Mi Perfil</h2>
-              <div><strong>Nombre:</strong> {form.name} {form.apellido}</div>
+              <div><strong>Nombre:</strong> {form.name} {form.lastName}</div>
               <div><strong>Email:</strong> {form.email}</div>
               <div><strong>Teléfono:</strong> {form.telefono}</div>
               <div><strong>Dirección:</strong> {form.direccion}</div>
@@ -662,7 +662,7 @@ useEffect(() => {
             <div className="myprofile-left-col">
               <div className="myprofile-container">
                 <h2>Mi Perfil</h2>
-                <div><strong>name:</strong> {form.name} {form.lastName}</div>
+                <div><strong>Nombre:</strong> {form.name} {form.lastName}</div>
                 <div><strong>Email:</strong> {form.email}</div>
                 <div><strong>Teléfono:</strong> {form.telefono}</div>
                 <div><strong>Dirección:</strong> {form.direccion}</div>
@@ -1114,7 +1114,7 @@ useEffect(() => {
               </div>
               <div>
                 <label>Apellido:</label>
-                <input name="apellido" value={form.lastName} onChange={handleChange} />
+                <input name="lastName" value={form.lastName} onChange={handleChange} />
               </div>
               <div>
                 <label>Email:</label>
